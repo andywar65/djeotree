@@ -2,11 +2,20 @@ from django.contrib import admin
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
 
-from .models import Family, Tag
+from .models import Family, Tag, TagValue
+
+
+class TagValueInline(admin.TabularInline):
+    model = TagValue
+    fields = ("tag", "value")
+    extra = 0
 
 
 class FamilyAdmin(TreeAdmin):
     form = movenodeform_factory(Family)
+    inlines = [
+        TagValueInline,
+    ]
 
     fieldsets = (
         (
