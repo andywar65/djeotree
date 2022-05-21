@@ -2,7 +2,7 @@ from django.contrib import admin
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
 
-from .models import Family, Tag, TagValue
+from .models import Element, ElementImage, ElementTagValue, Family, Tag, TagValue
 
 
 class TagValueInline(admin.TabularInline):
@@ -39,3 +39,29 @@ admin.site.register(Family, FamilyAdmin)
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ("title",)
+
+
+class ElementImageInline(admin.TabularInline):
+    model = ElementImage
+    fields = (
+        "position",
+        "description",
+        "fb_image",
+    )
+    sortable_field_name = "position"
+    extra = 0
+
+
+class ElementTagValueInline(admin.TabularInline):
+    model = ElementTagValue
+    fields = ("tag", "value")
+    extra = 0
+
+
+@admin.register(Element)
+class ElementAdmin(admin.ModelAdmin):
+    list_display = ("family",)
+    inlines = [
+        ElementImageInline,
+        ElementTagValueInline,
+    ]

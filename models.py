@@ -1,6 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+from djgeojson.fields import PointField
+from filebrowser.base import FileObject
+from filebrowser.fields import FileBrowseField
 from treebeard.mp_tree import MP_Node
 
 User = get_user_model()
@@ -90,3 +94,98 @@ class TagValue(models.Model):
     class Meta:
         verbose_name = _("Tag value")
         verbose_name_plural = _("Tag values")
+
+
+class Element(models.Model):
+    family = models.ForeignKey(
+        Family,
+        on_delete=models.CASCADE,
+        related_name="family_element",
+        verbose_name=_("Family"),
+    )
+    intro = models.CharField(_("Description"), null=True, blank=True, max_length=200)
+    body = models.TextField(_("Text"), null=True)
+    date = models.DateField(
+        _("Date"),
+        default=now,
+    )
+    location = PointField()
+    private = models.BooleanField(_("Private element"), default=False)
+
+    class Meta:
+        verbose_name = _("Element")
+        verbose_name_plural = _("Elements")
+
+    def __str__(self):
+        return self.family.title + "-" + str(self.id)
+
+
+class ElementTagValue(models.Model):
+    tag = models.ForeignKey(
+        Tag,
+        on_delete=models.CASCADE,
+        related_name="element_tag_value",
+        verbose_name=_("Tag"),
+    )
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name="element_value",
+        verbose_name=_("Element"),
+    )
+    value = models.CharField(
+        _("Value"),
+        help_text=_("Tag value"),
+        max_length=200,
+    )
+
+    class Meta:
+        verbose_name = _("Tag value")
+        verbose_name_plural = _("Tag values")
+
+
+class ElementImage(models.Model):
+    element = models.ForeignKey(
+        Element,
+        on_delete=models.CASCADE,
+        related_name="element_image",
+        verbose_name=_("Article"),
+    )
+    description = models.CharField(
+        _("Description"),
+        help_text=_("Used in captions"),
+        max_length=200,
+        null=True,
+        blank=True,
+    )
+    fb_image = FileBrowseField(
+        _("Image"),
+        max_length=200,
+        extensions=[".jpg", ".png", ".jpeg", ".gif", ".tif", ".tiff"],
+        directory="images/element/",
+        null=True,
+    )
+    image = models.ImageField(
+        _("Image"),
+        max_length=200,
+        null=True,
+        upload_to="uploads/images/element/",
+    )
+    position = models.PositiveSmallIntegerField(_("Position"), null=True)
+
+    class Meta:
+        verbose_name = _("Element image")
+        verbose_name_plural = _("Element images")
+        ordering = [
+            "position",
+        ]
+
+    def save(self, *args, **kwargs):
+        # save and upload image
+        super(ElementImage, self).save(*args, **kwargs)
+        if self.image:
+            # image is saved on the front end, passed to fb_image and deleted
+            self.fb_image = FileObject(str(self.image))
+            # check_tall_image(self.fb_image)
+            self.image = None
+            super(ElementImage, self).save(*args, **kwargs)
