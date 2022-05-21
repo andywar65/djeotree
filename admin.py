@@ -2,7 +2,7 @@ from django.contrib import admin
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
 
-from .models import Family
+from .models import Family, Tag
 
 
 class FamilyAdmin(TreeAdmin):
@@ -25,3 +25,8 @@ class FamilyAdmin(TreeAdmin):
 
 
 admin.site.register(Family, FamilyAdmin)
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ("title",)
