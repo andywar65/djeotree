@@ -1,4 +1,5 @@
 from django.contrib import admin
+from leaflet.admin import LeafletGeoAdmin
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
 
@@ -58,10 +59,12 @@ class ElementTagValueInline(admin.TabularInline):
     extra = 0
 
 
-@admin.register(Element)
-class ElementAdmin(admin.ModelAdmin):
+class ElementAdmin(LeafletGeoAdmin):
     list_display = ("family",)
     inlines = [
         ElementImageInline,
         ElementTagValueInline,
     ]
+
+
+admin.site.register(Element, ElementAdmin)
