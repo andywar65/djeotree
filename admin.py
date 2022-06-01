@@ -60,7 +60,7 @@ class ElementTagValueInline(admin.TabularInline):
 
 
 class ElementAdmin(LeafletGeoAdmin):
-    list_display = ("__str__",)
+    list_display = ("__str__", "get_user")
     inlines = [
         ElementImageInline,
         ElementTagValueInline,

@@ -119,6 +119,11 @@ class Element(models.Model):
     def __str__(self):
         return self.family.title + "-" + str(self.id)
 
+    def get_user(self):
+        return self.family.user
+
+    get_user.short_description = _("Author")
+
 
 class ElementTagValue(models.Model):
     tag = models.ForeignKey(
