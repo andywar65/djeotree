@@ -53,13 +53,6 @@ class Family(MP_Node):
         help_text=_("Few words to describe the family"),
         max_length=100,
     )
-    tags = models.ManyToManyField(
-        Tag,
-        blank=True,
-        verbose_name=_("Tags"),
-        through="TagValue",
-        help_text=_("Choose tags attached to this family"),
-    )
 
     class Meta:
         verbose_name = _("Element Family")
