@@ -6,3 +6,5 @@ django-htmx
 coverage
 django-treebeard
 django-geojson
+jsonfield
+django-leaflet
