@@ -5,7 +5,7 @@
   const collection = {{ elements|geojsonfeature:"popupContent"|safe }};
   function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.popupContent) {
-      layer.bindPopup(feature.properties.popupContent);
+      layer.bindPopup(feature.properties.popupContent, {minWidth: 256});
     }
   }
   function map_init(map, options) {

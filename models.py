@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.timezone import now
@@ -111,13 +112,30 @@ class Element(models.Model):
 
     @property
     def popupContent(self):
-        return self.__str__()
+        image = self.get_first_image()
+        if not image:
+            return "<h5>%(title)s</h5><small>%(intro)s</small>" % {
+                "title": self.__str__(),
+                "intro": self.intro,
+            }
+        return '<h5>%(title)s</h5><img src="%(image)s"><small>%(intro)s</small>' % {
+            "title": self.__str__(),
+            "image": image,
+            "intro": self.intro,
+        }
 
     def __str__(self):
         return self.family.title + "-" + str(self.id)
 
     def get_user(self):
         return self.family.user
+
+    def get_first_image(self):
+        image = self.element_image.first()
+        if not image:
+            return
+        path = image.fb_image.version_generate("popup").path
+        return settings.MEDIA_URL + path
 
     get_user.short_description = _("Author")
 
