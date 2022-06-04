@@ -102,7 +102,7 @@ class Element(models.Model):
         _("Date"),
         default=now,
     )
-    location = PointField()
+    geom = PointField()
     private = models.BooleanField(_("Private element"), default=False)
 
     class Meta:

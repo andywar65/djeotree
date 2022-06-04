@@ -2,7 +2,7 @@
 {% load geojson_tags %}
 
 <script type="text/javascript">
-  const collection = {{ elements|geojsonfeature:":location"|safe }};
+  const collection = {{ elements|geojsonfeature|safe }};
   function map_init(map, options) {
     L.geoJson(collection).addTo(map);
   }
