@@ -1,8 +1,14 @@
-# from django.shortcuts import render
-# from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 
 from .models import Element, Family
+
+# from django.shortcuts import render
+# from django.utils.translation import gettext_lazy as _
+
+
+User = get_user_model()
 
 
 class HxPageTemplateMixin:
@@ -22,6 +28,32 @@ class ElementListView(HxPageTemplateMixin, ListView):
 
     def get_queryset(self):
         qs = Element.objects.filter(private=False)
+        if self.request.user.is_authenticated:
+            qs2 = Element.objects.filter(
+                family__user_id=self.request.user.uuid, private=True
+            )
+            qs = qs | qs2
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        authors = Family.objects.values_list("user__username", flat=True)
+        authors = list(dict.fromkeys(authors))
+        context["authors"] = authors
+        return context
+
+
+class ElementAuhtorListView(HxPageTemplateMixin, ListView):
+    model = Element
+    context_object_name = "elements"
+    template_name = "djeotree/htmx/element_author_list.html"
+
+    def setup(self, request, *args, **kwargs):
+        super(ElementAuhtorListView, self).setup(request, *args, **kwargs)
+        self.author = get_object_or_404(User, username=self.kwargs["username"])
+
+    def get_queryset(self):
+        qs = Element.objects.filter(user_id=self.author.uuid, private=False)
         if self.request.user.is_authenticated:
             qs2 = Element.objects.filter(
                 family__user_id=self.request.user.uuid, private=True
