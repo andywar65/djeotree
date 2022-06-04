@@ -1,3 +1,11 @@
 {% load leaflet_tags %}
+{% load geojson_tags %}
 
-{% leaflet_map "mymap" %}
+<script type="text/javascript">
+  const collection = {{ elements|geojsonfeature:":location"|safe }};
+  function map_init(map, options) {
+    L.geoJson(collection).addTo(map);
+  }
+</script>
+
+{% leaflet_map "mymap" callback="window.map_init" %}
