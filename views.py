@@ -2,7 +2,7 @@
 # from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 
-from .models import Element
+from .models import Element, Family
 
 
 class HxPageTemplateMixin:
@@ -28,3 +28,10 @@ class ElementListView(HxPageTemplateMixin, ListView):
             )
             qs = qs | qs2
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        authors = Family.objects.values_list("user__username", flat=True)
+        authors = list(dict.fromkeys(authors))
+        context["authors"] = authors
+        return context
