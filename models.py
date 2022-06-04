@@ -109,6 +109,10 @@ class Element(models.Model):
         verbose_name = _("Element")
         verbose_name_plural = _("Elements")
 
+    @property
+    def popupContent(self):
+        return self.__str__()
+
     def __str__(self):
         return self.family.title + "-" + str(self.id)
 

@@ -2,9 +2,14 @@
 {% load geojson_tags %}
 
 <script type="text/javascript">
-  const collection = {{ elements|geojsonfeature|safe }};
+  const collection = {{ elements|geojsonfeature:"popupContent"|safe }};
+  function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.popupContent) {
+      layer.bindPopup(feature.properties.popupContent);
+    }
+  }
   function map_init(map, options) {
-    L.geoJson(collection).addTo(map);
+    L.geoJson(collection, {onEachFeature: onEachFeature}).addTo(map);
   }
 </script>
 <div class="row" style="margin-bottom: 15px">

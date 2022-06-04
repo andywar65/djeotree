@@ -23,6 +23,8 @@ class ElementListView(HxPageTemplateMixin, ListView):
     def get_queryset(self):
         qs = Element.objects.filter(private=False)
         if self.request.user.is_authenticated:
-            qs2 = Element.objects.filter(user_id=self.request.user.uuid, private=True)
+            qs2 = Element.objects.filter(
+                family__user_id=self.request.user.uuid, private=True
+            )
             qs = qs | qs2
         return qs
