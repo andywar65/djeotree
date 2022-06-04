@@ -18,7 +18,7 @@ class HxPageTemplateMixin:
 class ElementListView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "htmx/element_list.html"
+    template_name = "djeotree/htmx/element_list.html"
 
     def get_queryset(self):
         qs = Element.objects.filter(private=False)
