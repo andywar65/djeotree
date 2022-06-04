@@ -9,7 +9,9 @@
     }
   }
   function map_init(map, options) {
-    L.geoJson(collection, {onEachFeature: onEachFeature}).addTo(map);
+    let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
+    markers.addTo(map);
+    map.fitBounds(markers.getBounds(), {padding: [50,50]});
   }
 </script>
 <div class="row" style="margin-bottom: 15px">
