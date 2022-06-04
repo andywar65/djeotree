@@ -7,5 +7,8 @@
     L.geoJson(collection).addTo(map);
   }
 </script>
-
-{% leaflet_map "mymap" callback="window.map_init" %}
+<div class="row" style="margin-bottom: 15px">
+  <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+    {% leaflet_map "mymap" callback="window.map_init" %}
+  </div>
+</div>
