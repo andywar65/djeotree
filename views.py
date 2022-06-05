@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 from .models import Element, Family
 
@@ -96,3 +96,16 @@ class ElementFamilyListView(HxPageTemplateMixin, ListView):
         context["family"] = self.family
         context["author"] = self.author
         return context
+
+
+class ElementDetailView(HxPageTemplateMixin, DetailView):
+    model = Element
+    context_object_name = "element"
+    template_name = "djeotree/htmx/element_detail.html"
+
+    def get_object(self, queryset=None):
+        super(ElementDetailView, self).get_object(queryset=None)
+        self.family = self.object.family
+        self.author = self.family.user
+        if self.object.private and self.author != self.request.user:
+            return HttpResponseForbidden()
