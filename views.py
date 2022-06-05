@@ -40,20 +40,21 @@ class ElementListView(HxPageTemplateMixin, ListView):
         authors = Family.objects.values_list("user__username", flat=True)
         authors = list(dict.fromkeys(authors))
         context["authors"] = authors
+        # TODO if only one author skips to ElementAuthorListView
         return context
 
 
-class ElementAuhtorListView(HxPageTemplateMixin, ListView):
+class ElementAuthorListView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
     template_name = "djeotree/htmx/element_author_list.html"
 
     def setup(self, request, *args, **kwargs):
-        super(ElementAuhtorListView, self).setup(request, *args, **kwargs)
+        super(ElementAuthorListView, self).setup(request, *args, **kwargs)
         self.author = get_object_or_404(User, username=self.kwargs["username"])
 
     def get_queryset(self):
-        qs = Element.objects.filter(user_id=self.author.uuid, private=False)
+        qs = Element.objects.filter(family__user_id=self.author.uuid, private=False)
         if self.request.user.is_authenticated:
             qs2 = Element.objects.filter(
                 family__user_id=self.request.user.uuid, private=True
@@ -63,7 +64,7 @@ class ElementAuhtorListView(HxPageTemplateMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        authors = Family.objects.values_list("user__username", flat=True)
-        authors = list(dict.fromkeys(authors))
-        context["authors"] = authors
+        families = Family.objects.filter(user_id=self.author.uuid)
+        context["families"] = families
+        context["author"] = self.author
         return context
