@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 
 from .models import Element, Family
@@ -66,5 +68,31 @@ class ElementAuthorListView(HxPageTemplateMixin, ListView):
         context = super().get_context_data(**kwargs)
         families = Family.objects.filter(user_id=self.author.uuid)
         context["families"] = families
+        context["author"] = self.author
+        return context
+
+
+class ElementFamilyListView(HxPageTemplateMixin, ListView):
+    model = Element
+    context_object_name = "elements"
+    template_name = "djeotree/htmx/element_family_list.html"
+
+    def setup(self, request, *args, **kwargs):
+        super(ElementFamilyListView, self).setup(request, *args, **kwargs)
+        self.author = get_object_or_404(User, username=self.kwargs["username"])
+        self.family = get_object_or_404(Family, id=self.kwargs["pk"])
+        if not self.author == self.family.user:
+            raise Http404(_("Family does not belong to User"))
+
+    def get_queryset(self):
+        qs = Element.objects.filter(family_id=self.family.id, private=False)
+        if self.request.user.is_authenticated:
+            qs2 = Element.objects.filter(family_id=self.family.id, private=True)
+            qs = qs | qs2
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["family"] = self.family
         context["author"] = self.author
         return context

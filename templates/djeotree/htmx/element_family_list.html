@@ -22,21 +22,19 @@
   <div class="col">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">{% trans "Author"%}: {{ author.username }}</h4>
+        <h4 class="card-title">
+          {% trans "Author"%}: {{ author.username }}, {% trans "Family"%}: {{ family.title }}
+        </h4>
       </div>
       <div class="card-body">
-        {% if families %}
+        {% if elements %}
           <ul>
-            {% for family in families %}
-              <li>
-                <a href="{% url 'geotree:family_list' username=author pk=family.id %}">
-                  {{ family }}
-                </a>
-              </li>
+            {% for element in elements %}
+              <li>{{ element }}</li>
             {% endfor %}
           </ul>
         {% else %}
-          <p>{% trans "No families yet" %}</p>
+          <p>{% trans "No elements yet" %}</p>
         {% endif %}
       </div>
     </div>
