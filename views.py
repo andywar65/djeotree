@@ -104,8 +104,9 @@ class ElementDetailView(HxPageTemplateMixin, DetailView):
     template_name = "djeotree/htmx/element_detail.html"
 
     def get_object(self, queryset=None):
-        super(ElementDetailView, self).get_object(queryset=None)
-        self.family = self.object.family
+        e = super(ElementDetailView, self).get_object(queryset=None)
+        self.family = e.family
         self.author = self.family.user
-        if self.object.private and self.author != self.request.user:
+        if e.private and self.author != self.request.user:
             return HttpResponseForbidden()
+        return e
