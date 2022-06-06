@@ -2,16 +2,22 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, RedirectView
 
 from .models import Element, Family
 
-# from django.shortcuts import render
-# from django.utils.translation import gettext_lazy as _
-
-
 User = get_user_model()
+
+
+class ElementRedirectView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        authors = Family.objects.values_list("user__username", flat=True)
+        authors = list(dict.fromkeys(authors))
+        if len(authors) == 1:
+            return reverse("geotree:author_list", kwargs={"username": authors[0]})
+        return reverse("geotree:element_list")
 
 
 class HxPageTemplateMixin:
@@ -43,7 +49,6 @@ class ElementListView(HxPageTemplateMixin, ListView):
         authors = Family.objects.values_list("user__username", flat=True)
         authors = list(dict.fromkeys(authors))
         context["authors"] = authors
-        # TODO if only one author skips to ElementAuthorListView
         return context
 
 
