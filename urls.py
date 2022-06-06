@@ -1,7 +1,12 @@
 from django.urls import path
 from django.utils.translation import gettext_lazy as _
 
-from .views import ElementAuthorListView, ElementFamilyListView, ElementListView
+from .views import (
+    ElementAuthorListView,
+    ElementDetailView,
+    ElementFamilyListView,
+    ElementListView,
+)
 
 app_name = "geotree"
 urlpatterns = [
@@ -12,4 +17,5 @@ urlpatterns = [
         ElementFamilyListView.as_view(),
         name="family_list",
     ),
+    path(_("element/<pk>"), ElementDetailView.as_view(), name="element_detail"),
 ]

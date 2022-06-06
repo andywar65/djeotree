@@ -110,3 +110,9 @@ class ElementDetailView(HxPageTemplateMixin, DetailView):
         if e.private and self.author != self.request.user:
             return HttpResponseForbidden()
         return e
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["family"] = self.family
+        context["author"] = self.author
+        return context

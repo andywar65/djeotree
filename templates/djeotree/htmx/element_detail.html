@@ -1,0 +1,43 @@
+{% load leaflet_tags %}
+{% load geojson_tags %}
+{% load i18n %}
+
+<script type="text/javascript">
+  const collection = {{ element|geojsonfeature:"popupContent"|safe }};
+  function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.popupContent) {
+      layer.bindPopup(feature.properties.popupContent, {minWidth: 256});
+    }
+  }
+  function map_init(map, options) {
+    let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
+    markers.addTo(map);
+    map.fitBounds(markers.getBounds(), {padding: [50,50]});
+  }
+</script>
+<div class="row" style="margin-bottom: 15px">
+  <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+    {% leaflet_map "mymap" callback="window.map_init" %}
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">
+          {% trans "Author"%}: {{ author.username }}, {% trans "Family"%}: {{ family.title }},
+          {% trans "Element"%}: {{ element }}
+        </h4>
+      </div>
+      <div class="card-body">
+        {% if element.element_value.all %}
+          <ul>
+            {% for value in element.element_value.all %}
+              <li>{{ value.tag.title }}: {{ value.value }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>{% trans "No tags yet" %}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
