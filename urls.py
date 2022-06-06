@@ -15,7 +15,7 @@ urlpatterns = [
     path(_("authors"), ElementListView.as_view(), name="element_list"),
     path(_("authors/<username>"), ElementAuthorListView.as_view(), name="author_list"),
     path(
-        _("author/<username>/family/<pk>"),
+        _("authors/<username>/family/<pk>"),
         ElementFamilyListView.as_view(),
         name="family_list",
     ),
