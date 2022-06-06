@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.http import Http404, HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
@@ -108,7 +109,7 @@ class ElementDetailView(HxPageTemplateMixin, DetailView):
         self.family = e.family
         self.author = self.family.user
         if e.private and self.author != self.request.user:
-            return HttpResponseForbidden()
+            raise PermissionDenied
         return e
 
     def get_context_data(self, **kwargs):
