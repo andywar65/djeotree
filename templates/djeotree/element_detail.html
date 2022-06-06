@@ -1,25 +1,5 @@
-{% extends "base.html" %}
-{% load static %}
-{% load leaflet_tags %}
+{% extends "djeotree/element_base.html" %}
 
-{% block extra-head %}
-  {% leaflet_js %}
-  {% leaflet_css %}
-  <style>
-    .leaflet-container {  /* all maps */
-      height: 600px;
-    }
-  </style>
-{% endblock extra-head %}
-
-{% block menucont %}
-  {% include 'navbar.html' %}
-  <main class="flex-shrink-0">
-    <div id="content" class="container">
-      {% block content %}
-        {% include "djeotree/htmx/element_detail.html" %}
-      {% endblock content %}
-    </div>
-  </main>
-  {% include 'footer.html' %}
-{% endblock menucont %}
+{% block content %}
+  {% include "djeotree/htmx/element_detail.html" %}
+{% endblock content %}
