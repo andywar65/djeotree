@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from djgeojson.fields import PointField
@@ -112,17 +113,16 @@ class Element(models.Model):
 
     @property
     def popupContent(self):
-        image = self.get_first_image()
-        if not image:
-            return "<h5>%(title)s</h5><small>%(intro)s</small>" % {
-                "title": self.__str__(),
-                "intro": self.intro,
-            }
-        return '<h5>%(title)s</h5><img src="%(image)s"><small>%(intro)s</small>' % {
+        url = reverse("geotree:element_detail", kwargs={"pk": self.id})
+        title_str = '<h5><a href="%(url)s">%(title)s</a></h5>' % {
             "title": self.__str__(),
-            "image": image,
-            "intro": self.intro,
+            "url": url,
         }
+        intro_str = "<small>%(intro)s</small>" % {"intro": self.intro}
+        image_str = '<img src="%(image)s">' % {"image": self.get_first_image()}
+        if not image_str:
+            return title_str + intro_str
+        return title_str + image_str + intro_str
 
     def __str__(self):
         return self.family.title + "-" + str(self.id)
