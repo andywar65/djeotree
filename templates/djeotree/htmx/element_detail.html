@@ -3,13 +3,13 @@
 {% load i18n %}
 
 <script type="text/javascript">
-  const collection = {{ element|geojsonfeature:"popupContent"|safe }};
   function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.popupContent) {
       layer.bindPopup(feature.properties.popupContent, {minWidth: 256});
     }
   }
   function map_init(map, options) {
+    let collection = {{ element|geojsonfeature:"popupContent"|safe }};
     let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
     markers.addTo(map);
     map.fitBounds(markers.getBounds(), {padding: [50,50]});
