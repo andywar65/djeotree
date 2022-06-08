@@ -1,0 +1,13 @@
+{% for item, info in family %}
+  {% if info.open %}
+    <ul><li>
+  {% else %}
+    </li><li>
+  {% endif %}
+  <a href="{% url 'geotree:family_list' username=author pk=item.id %}">
+    {{ item.title }}
+  </a>
+  {% for close in info.close %}
+    </li></ul>
+  {% endfor %}
+{% endfor %}
