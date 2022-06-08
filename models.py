@@ -4,7 +4,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
-from djgeojson.fields import PointField
+from djgeojson.fields import MultiLineStringField, PointField
 from filebrowser.base import FileObject
 from filebrowser.fields import FileBrowseField
 from treebeard.mp_tree import MP_Node
@@ -55,6 +55,7 @@ class Family(MP_Node):
         help_text=_("Few words to describe the family"),
         max_length=100,
     )
+    geom = MultiLineStringField(null=True)
 
     class Meta:
         verbose_name = _("Element Family")
