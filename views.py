@@ -72,8 +72,12 @@ class ElementAuthorListView(HxPageTemplateMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        families = Family.objects.filter(user_id=self.author.uuid)
-        context["families"] = families
+        roots = Family.objects.filter(user_id=self.author.uuid, depth=1)
+        list = []
+        for root in roots:
+            annotated = Family.get_annotated_list(parent=root)
+            list.append(annotated)
+        context["families"] = list
         context["author"] = self.author
         return context
 

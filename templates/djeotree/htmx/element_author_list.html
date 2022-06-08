@@ -10,15 +10,21 @@
       </div>
       <div class="card-body">
         {% if families %}
-          <ul>
-            {% for family in families %}
-              <li>
-                <a href="{% url 'geotree:family_list' username=author pk=family.id %}">
-                  {{ family }}
-                </a>
-              </li>
+          {% for family in families %}
+            {% for item, info in family %}
+              {% if info.open %}
+                <ul><li>
+              {% else %}
+                </li><li>
+              {% endif %}
+              <a href="{% url 'geotree:family_list' username=author pk=item.id %}">
+                {{ item.title }}
+              </a>
+              {% for close in info.close %}
+                </li></ul>
+              {% endfor %}
             {% endfor %}
-          </ul>
+          {% endfor %}
         {% else %}
           <p>{% trans "No families yet" %}</p>
         {% endif %}
