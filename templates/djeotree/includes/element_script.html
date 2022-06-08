@@ -8,7 +8,7 @@
   }
   function map_init(map, options) {
     {% include "djeotree/includes/base_maps.html" %}
-
+    L.control.layers(baseMaps).addTo(map);
     let collection = {{ elements|geojsonfeature:"popupContent"|safe }};
     let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
     markers.addTo(map);
