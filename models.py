@@ -98,8 +98,8 @@ class Element(models.Model):
         related_name="family_element",
         verbose_name=_("Family"),
     )
-    intro = models.CharField(_("Description"), null=True, blank=True, max_length=200)
-    body = models.TextField(_("Text"), null=True)
+    intro = models.CharField(_("Description"), null=True, max_length=200)
+    body = models.TextField(_("Text"), null=True, blank=True)
     date = models.DateField(
         _("Date"),
         default=now,

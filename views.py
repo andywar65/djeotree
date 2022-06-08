@@ -4,6 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, RedirectView
 
@@ -134,4 +135,6 @@ class ElementDetailView(HxPageTemplateMixin, DetailView):
         context["family"] = self.family
         context["author"] = self.author
         context["mapbox_token"] = settings.MAPBOX_TOKEN
+        context["main_gal_slug"] = get_random_string(7)
+        context["images"] = context["element"].element_image.all()
         return context

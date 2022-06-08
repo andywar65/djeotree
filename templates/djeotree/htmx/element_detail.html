@@ -55,11 +55,18 @@
         {% else %}
           <p>{% trans "No tags yet" %}</p>
         {% endif %}
-
       </div>
     </div>
   </div>
   <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
     {% leaflet_map "mymap" callback="window.map_init" %}
+  </div>
+</div>
+<div class="row">
+  <div class="col" style="margin-bottom: 20px">
+    {{ element.body|safe }}
+  </div>
+  <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+    {% include 'djeotree/includes/gallery.html' %}
   </div>
 </div>
