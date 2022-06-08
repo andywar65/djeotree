@@ -10,9 +10,14 @@
   }
   function map_init(map, options) {
     let collection = {{ element|geojsonfeature:"popupContent"|safe }};
-    let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
-    markers.addTo(map);
-    map.fitBounds(markers.getBounds(), {padding: [50,50]});
+    let marker = L.geoJson(collection, {onEachFeature: onEachFeature});
+    marker.addTo(map);
+    console.log(collection)
+    map.setView(
+      [collection.features[0].geometry.coordinates[1],
+        collection.features[0].geometry.coordinates[0]],
+      15
+    );
   }
 </script>
 <div class="row" style="margin-bottom: 15px">
@@ -23,12 +28,24 @@
     <div class="card">
       <div class="card-header">
         <h4 class="card-title">
-          {% trans "Author"%}: {{ author.username }}, {% trans "Family"%}: {{ family.title }},
           {% trans "Element"%}: {{ element }}
         </h4>
       </div>
       <div class="card-body">
+        <ul>
+          <li>{% trans "Author"%}:
+            <a href="{% url 'geotree:author_list' username=author %}">
+              {{ author.username }}
+            </a>
+          </li>
+          <li>{% trans "Family"%}:
+            <a href="{% url 'geotree:family_list' username=author pk=family.id %}">
+              {{ family.title }}
+            </a>
+          </li>
+        </ul>
         {% if element.element_value.all %}
+          <h5>{% trans "Tags"%}:</h5>
           <ul>
             {% for value in element.element_value.all %}
               <li>{{ value.tag.title }}: {{ value.value }}</li>
@@ -37,6 +54,7 @@
         {% else %}
           <p>{% trans "No tags yet" %}</p>
         {% endif %}
+
       </div>
     </div>
   </div>
