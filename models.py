@@ -119,9 +119,10 @@ class Element(models.Model):
             "url": url,
         }
         intro_str = "<small>%(intro)s</small>" % {"intro": self.intro}
-        image_str = '<img src="%(image)s">' % {"image": self.get_first_image()}
-        if not image_str:
+        image = self.get_first_image()
+        if not image:
             return title_str + intro_str
+        image_str = '<img src="%(image)s">' % {"image": image}
         return title_str + image_str + intro_str
 
     def __str__(self):
