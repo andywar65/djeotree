@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
@@ -49,6 +50,7 @@ class ElementListView(HxPageTemplateMixin, ListView):
         authors = Family.objects.values_list("user__username", flat=True)
         authors = list(dict.fromkeys(authors))
         context["authors"] = authors
+        context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
 
@@ -79,6 +81,7 @@ class ElementAuthorListView(HxPageTemplateMixin, ListView):
             list.append(annotated)
         context["families"] = list
         context["author"] = self.author
+        context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
 
@@ -109,6 +112,7 @@ class ElementFamilyListView(HxPageTemplateMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["family"] = self.family
         context["author"] = self.author
+        context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
 
@@ -129,4 +133,5 @@ class ElementDetailView(HxPageTemplateMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["family"] = self.family
         context["author"] = self.author
+        context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
