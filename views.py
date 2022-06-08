@@ -91,9 +91,13 @@ class ElementFamilyListView(HxPageTemplateMixin, ListView):
             raise Http404(_("Family does not belong to User"))
 
     def get_queryset(self):
-        qs = Element.objects.filter(family_id=self.family.id, private=False)
+        list = [self.family.id]
+        children = self.family.get_children()
+        for child in children:
+            list.append(child.id)
+        qs = Element.objects.filter(family_id__in=list, private=False)
         if self.request.user.is_authenticated:
-            qs2 = Element.objects.filter(family_id=self.family.id, private=True)
+            qs2 = Element.objects.filter(family_id__in=list, private=True)
             qs = qs | qs2
         return qs
 
