@@ -128,12 +128,13 @@ class Element(models.Model):
             "title": self.__str__(),
             "url": url,
         }
-        intro_str = "<small>%(intro)s</small>" % {"intro": self.intro}
+        intro_str = "<small>%(intro)s</small> / " % {"intro": self.intro}
+        author_str = "<small>%(author)s</small>" % {"author": self.user.username}
         image = self.get_first_image()
         if not image:
-            return title_str + intro_str
+            return title_str + intro_str + author_str
         image_str = '<img src="%(image)s">' % {"image": image}
-        return title_str + image_str + intro_str
+        return title_str + image_str + intro_str + author_str
 
     def __str__(self):
         return self.family.title + "-" + str(self.id)
