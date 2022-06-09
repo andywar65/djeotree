@@ -120,7 +120,10 @@ class Element(models.Model):
 
     @property
     def popupContent(self):
-        url = reverse("geotree:element_detail", kwargs={"pk": self.id})
+        url = reverse(
+            "geotree:element_detail",
+            kwargs={"username": self.user.username, "pk": self.id},
+        )
         title_str = '<h5><a href="%(url)s">%(title)s</a></h5>' % {
             "title": self.__str__(),
             "url": url,

@@ -123,18 +123,19 @@ class ElementDetailView(HxPageTemplateMixin, DetailView):
     template_name = "djeotree/htmx/element_detail.html"
 
     def get_object(self, queryset=None):
-        e = super(ElementDetailView, self).get_object(queryset=None)
-        self.family = e.family
-        self.author = self.family.user
-        if e.private and self.author != self.request.user:
+        self.object = super(ElementDetailView, self).get_object(queryset=None)
+        user = get_object_or_404(User, username=self.kwargs["username"])
+        if user != self.object.user:
+            raise Http404(_("Element does not belong to User"))
+        if self.object.private and self.object.user != self.request.user:
             raise PermissionDenied
-        return e
+        return self.object
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["family"] = self.family
-        context["author"] = self.author
+        context["family"] = self.object.family
+        context["author"] = self.object.user
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         context["main_gal_slug"] = get_random_string(7)
-        context["images"] = context["element"].element_image.all()
+        context["images"] = self.object.element_image.all()
         return context

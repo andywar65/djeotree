@@ -19,5 +19,9 @@ urlpatterns = [
         ElementFamilyListView.as_view(),
         name="family_list",
     ),
-    path(_("element/<pk>"), ElementDetailView.as_view(), name="element_detail"),
+    path(
+        _("author/<username>/element/<pk>"),
+        ElementDetailView.as_view(),
+        name="element_detail",
+    ),
 ]
