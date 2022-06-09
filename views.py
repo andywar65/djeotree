@@ -15,7 +15,7 @@ User = get_user_model()
 
 class ElementRedirectView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        authors = Family.objects.values_list("user__username", flat=True)
+        authors = Element.objects.values_list("user__username", flat=True)
         authors = list(dict.fromkeys(authors))
         if len(authors) == 1:
             return reverse("geotree:author_list", kwargs={"username": authors[0]})
@@ -40,15 +40,13 @@ class ElementListView(HxPageTemplateMixin, ListView):
     def get_queryset(self):
         qs = Element.objects.filter(private=False)
         if self.request.user.is_authenticated:
-            qs2 = Element.objects.filter(
-                family__user_id=self.request.user.uuid, private=True
-            )
+            qs2 = Element.objects.filter(user_id=self.request.user.uuid, private=True)
             qs = qs | qs2
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        authors = Family.objects.values_list("user__username", flat=True)
+        authors = Element.objects.values_list("user__username", flat=True)
         authors = list(dict.fromkeys(authors))
         context["authors"] = authors
         context["mapbox_token"] = settings.MAPBOX_TOKEN
@@ -65,16 +63,15 @@ class ElementAuthorListView(HxPageTemplateMixin, ListView):
         self.author = get_object_or_404(User, username=self.kwargs["username"])
 
     def get_queryset(self):
-        qs = Element.objects.filter(family__user_id=self.author.uuid, private=False)
+        qs = Element.objects.filter(user_id=self.author.uuid, private=False)
         if self.request.user.is_authenticated:
-            qs2 = Element.objects.filter(
-                family__user_id=self.request.user.uuid, private=True
-            )
+            qs2 = Element.objects.filter(user_id=self.request.user.uuid, private=True)
             qs = qs | qs2
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # TODO get roots by element queryset
         roots = Family.objects.filter(user_id=self.author.uuid, depth=1)
         list = []
         for root in roots:
