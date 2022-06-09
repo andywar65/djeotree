@@ -93,6 +93,12 @@ class TagValue(models.Model):
 
 
 class Element(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_element",
+        verbose_name=_("Author"),
+    )
     family = models.ForeignKey(
         Family,
         on_delete=models.CASCADE,
