@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load leaflet_tags %}
+
+{% block extra-head %}
+  {% leaflet_js %}
+  {% leaflet_css %}
+  <style>
+    .leaflet-container {  /* all maps */
+      height: 600px;
+      margin-bottom: 20px;
+    }
+  </style>
+{% endblock extra-head %}
+
+{% block menucont %}
+  {% include 'navbar.html' %}
+  <main class="flex-shrink-0">
+    <div id="content" class="container">
+      {% include "djeotree/includes/element_script.html" %}
+      <div class="row">
+        <div class="col" style="margin-bottom: 20px">
+          {% include "djeotree/htmx/family_list.html" %}
+        </div>
+        <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+          {% leaflet_map "mymap" callback="window.map_init" %}
+        </div>
+      </div>
+    </div>
+  </main>
+  {% include 'footer.html' %}
+{% endblock menucont %}

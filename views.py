@@ -50,6 +50,30 @@ class BaseListView(HxPageTemplateMixin, ListView):
         return context
 
 
+class FamilyListView(HxPageTemplateMixin, ListView):
+    model = Element
+    context_object_name = "elements"
+    template_name = "djeotree/htmx/family_list.html"
+
+    def get_queryset(self):
+        qs = Element.objects.filter(private=False)
+        if self.request.user.is_authenticated:
+            qs2 = Element.objects.filter(user_id=self.request.user.uuid, private=True)
+            qs = qs | qs2
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        roots = Family.objects.filter(depth=1)
+        list = []
+        for root in roots:
+            annotated = Family.get_annotated_list(parent=root)
+            list.append(annotated)
+        context["families"] = list
+        context["mapbox_token"] = settings.MAPBOX_TOKEN
+        return context
+
+
 class ElementListView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"

@@ -1,0 +1,19 @@
+{% load i18n %}
+
+<div class="card" id="nav-card">
+  <div class="card-header">
+    <h4 class="card-title">{% trans "Families"%}</h4>
+  </div>
+  <div class="card-body">
+    {% for family in families %}
+      {% include "djeotree/includes/family_annotated_list.html" %}
+    {% endfor %}
+  </div>
+  <div class="card-footer">
+    <h5>{% trans "View by"%}: </h5>
+    <ul>
+      <li>{% trans "Authors"%}</li>
+      <li>{% trans "Tags"%}</li>
+    </ul>
+  </div>
+</div>

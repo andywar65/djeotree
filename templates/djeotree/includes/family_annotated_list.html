@@ -4,7 +4,7 @@
   {% else %}
     </li><li>
   {% endif %}
-  <a href="{% url 'geotree:family_list' username=author pk=item.id %}">
+  <a href="#">
     {{ item.title }}
   </a>
   {% for close in info.close %}
