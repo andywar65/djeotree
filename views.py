@@ -164,17 +164,14 @@ class ElementAuthorListView(HxPageTemplateMixin, ListView):
         return context
 
 
-class ElementFamilyListView(HxPageTemplateMixin, ListView):
+class FamilyDetailView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/htmx/element_family_list.html"
+    template_name = "djeotree/htmx/family_detail.html"
 
     def setup(self, request, *args, **kwargs):
-        super(ElementFamilyListView, self).setup(request, *args, **kwargs)
-        self.author = get_object_or_404(User, username=self.kwargs["username"])
+        super(FamilyDetailView, self).setup(request, *args, **kwargs)
         self.family = get_object_or_404(Family, id=self.kwargs["pk"])
-        if not self.author == self.family.user:
-            raise Http404(_("Family does not belong to User"))
 
     def get_queryset(self):
         list = [self.family.id]
@@ -185,12 +182,11 @@ class ElementFamilyListView(HxPageTemplateMixin, ListView):
         if self.request.user.is_authenticated:
             qs2 = Element.objects.filter(family_id__in=list, private=True)
             qs = qs | qs2
-        return qs
+        return qs.order_by("family", "id")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["family"] = self.family
-        context["author"] = self.author
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 

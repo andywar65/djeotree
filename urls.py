@@ -6,9 +6,9 @@ from .views import (  # noqa
     BaseListView,
     ElementAuthorListView,
     ElementDetailView,
-    ElementFamilyListView,
     ElementListView,
     ElementRedirectView,
+    FamilyDetailView,
     FamilyListView,
     TagListView,
 )
@@ -21,8 +21,8 @@ urlpatterns = [
     path(_("tags"), TagListView.as_view(), name="tag_list"),
     path(_("author/<username>"), ElementAuthorListView.as_view(), name="author_detail"),
     path(
-        _("authors/<username>/family/<pk>"),
-        ElementFamilyListView.as_view(),
+        _("family/<pk>"),
+        FamilyDetailView.as_view(),
         name="family_detail",
     ),
     path(
