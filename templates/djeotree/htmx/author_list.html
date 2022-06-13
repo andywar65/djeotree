@@ -2,9 +2,20 @@
 
 <div class="card" id="nav-card">
   <div class="card-header">
-    <h4 class="card-title">{% trans "Geotree"%}</h4>
+    <h4 class="card-title">{% trans "Authors"%}</h4>
   </div>
   <div class="card-body">
+    {% if authors %}
+      <ul>
+        {% for author in authors %}
+          <li><a href="{% url 'geotree:author_detail' username=author %}">{{ author }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>{% trans "No authors yet" %}</p>
+    {% endif %}
+  </div>
+  <div class="card-footer">
     <h5>{% trans "View by"%}: </h5>
     <ul>
       <li>
@@ -14,15 +25,6 @@
           hx-swap="outerHTML"
           hx-push-url="{% url 'geotree:family_list' %}">
           {% trans "Families"%}
-        </a>
-      </li>
-      <li>
-        <a class="primary-link"
-          hx-get="{% url 'geotree:author_list' %}"
-          hx-target="#nav-card"
-          hx-swap="outerHTML"
-          hx-push-url="{% url 'geotree:author_list' %}">
-          {% trans "Authors"%}
         </a>
       </li>
       <li>{% trans "Tags"%}</li>

@@ -12,7 +12,15 @@
   <div class="card-footer">
     <h5>{% trans "View by"%}: </h5>
     <ul>
-      <li>{% trans "Authors"%}</li>
+      <li>
+        <a class="primary-link"
+          hx-get="{% url 'geotree:author_list' %}"
+          hx-target="#nav-card"
+          hx-swap="outerHTML"
+          hx-push-url="{% url 'geotree:author_list' %}">
+          {% trans "Authors"%}
+        </a>
+      </li>
       <li>{% trans "Tags"%}</li>
     </ul>
   </div>
