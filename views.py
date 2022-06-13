@@ -134,13 +134,13 @@ class ElementListView(HxPageTemplateMixin, ListView):
         return context
 
 
-class ElementAuthorListView(HxPageTemplateMixin, ListView):
+class AuthorDetailView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/htmx/element_author_list.html"
+    template_name = "djeotree/htmx/author_detail.html"
 
     def setup(self, request, *args, **kwargs):
-        super(ElementAuthorListView, self).setup(request, *args, **kwargs)
+        super(AuthorDetailView, self).setup(request, *args, **kwargs)
         self.author = get_object_or_404(User, username=self.kwargs["username"])
 
     def get_queryset(self):
@@ -148,17 +148,10 @@ class ElementAuthorListView(HxPageTemplateMixin, ListView):
         if self.request.user.is_authenticated:
             qs2 = Element.objects.filter(user_id=self.request.user.uuid, private=True)
             qs = qs | qs2
-        return qs
+        return qs.order_by("family", "id")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # TODO get roots by element queryset
-        roots = Family.objects.filter(user_id=self.author.uuid, depth=1)
-        list = []
-        for root in roots:
-            annotated = Family.get_annotated_list(parent=root)
-            list.append(annotated)
-        context["families"] = list
         context["author"] = self.author
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
