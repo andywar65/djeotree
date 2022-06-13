@@ -8,7 +8,7 @@ from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, RedirectView
 
-from .models import Element, Family
+from .models import Element, Family, Tag
 
 User = get_user_model()
 
@@ -90,6 +90,25 @@ class AuthorListView(HxPageTemplateMixin, ListView):
         context = super().get_context_data(**kwargs)
         authors = Element.objects.values_list("user__username", flat=True)
         context["authors"] = list(dict.fromkeys(authors))
+        context["mapbox_token"] = settings.MAPBOX_TOKEN
+        return context
+
+
+class TagListView(HxPageTemplateMixin, ListView):
+    model = Element
+    context_object_name = "elements"
+    template_name = "djeotree/htmx/tag_list.html"
+
+    def get_queryset(self):
+        qs = Element.objects.filter(private=False)
+        if self.request.user.is_authenticated:
+            qs2 = Element.objects.filter(user_id=self.request.user.uuid, private=True)
+            qs = qs | qs2
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tags"] = Tag.objects.all()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 

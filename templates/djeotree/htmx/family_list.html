@@ -21,7 +21,15 @@
           {% trans "Authors"%}
         </a>
       </li>
-      <li>{% trans "Tags"%}</li>
+      <li>
+        <a class="primary-link"
+          hx-get="{% url 'geotree:tag_list' %}"
+          hx-target="#nav-card"
+          hx-swap="outerHTML"
+          hx-push-url="{% url 'geotree:tag_list' %}">
+          {% trans "Tags"%}
+        </a>
+      </li>
     </ul>
   </div>
 </div>
