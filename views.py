@@ -3,23 +3,15 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.urls import reverse
+
+# from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, ListView, RedirectView
+from django.views.generic import DetailView, ListView
 
 from .models import Element, Family, Tag
 
 User = get_user_model()
-
-
-class ElementRedirectView(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        authors = Element.objects.values_list("user__username", flat=True)
-        authors = list(dict.fromkeys(authors))
-        if len(authors) == 1:
-            return reverse("geotree:author_list", kwargs={"username": authors[0]})
-        return reverse("geotree:element_list")
 
 
 class HxPageTemplateMixin:
@@ -109,27 +101,6 @@ class TagListView(HxPageTemplateMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tags"] = Tag.objects.all()
-        context["mapbox_token"] = settings.MAPBOX_TOKEN
-        return context
-
-
-class ElementListView(HxPageTemplateMixin, ListView):
-    model = Element
-    context_object_name = "elements"
-    template_name = "djeotree/htmx/element_list.html"
-
-    def get_queryset(self):
-        qs = Element.objects.filter(private=False)
-        if self.request.user.is_authenticated:
-            qs2 = Element.objects.filter(user_id=self.request.user.uuid, private=True)
-            qs = qs | qs2
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        authors = Element.objects.values_list("user__username", flat=True)
-        authors = list(dict.fromkeys(authors))
-        context["authors"] = authors
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
