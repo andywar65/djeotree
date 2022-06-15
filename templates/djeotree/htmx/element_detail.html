@@ -49,7 +49,11 @@
           <h5>{% trans "Tags"%}:</h5>
           <ul>
             {% for value in element.element_value.all %}
-              <li>{{ value.tag.title }}: {{ value.value }}</li>
+              <li>
+                <a href="{% url 'geotree:tag_detail' pk=value.tag.id %}">
+                  {{ value.tag.title }}
+                </a>: {{ value.value }}
+              </li>
             {% endfor %}
           </ul>
         {% else %}
