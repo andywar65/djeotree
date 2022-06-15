@@ -8,6 +8,11 @@ from django.shortcuts import get_object_or_404
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
+from django.views.generic.dates import (  # noqa
+    DayArchiveView,
+    MonthArchiveView,
+    YearArchiveView,
+)
 
 from .models import Element, Family, Tag
 
@@ -201,4 +206,28 @@ class ElementDetailView(HxPageTemplateMixin, DetailView):
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         context["main_gal_slug"] = get_random_string(7)
         context["images"] = self.object.element_image.all()
+        return context
+
+
+class ElementDayArchiveView(HxPageTemplateMixin, DayArchiveView):
+    model = Element
+    date_field = "date"
+    context_object_name = "elements"
+    year_format = "%Y"
+    month_format = "%m"
+    day_format = "%d"
+    allow_empty = True
+    template_name = "djeotree/htmx/day_list.html"
+
+    def get_queryset(self):
+        original = super(ElementDayArchiveView, self).get_queryset()
+        qs = original.filter(private=False)
+        if self.request.user.is_authenticated:
+            qs2 = original.filter(user_id=self.request.user.uuid, private=True)
+            qs = qs | qs2
+        return qs.order_by("family", "id")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
