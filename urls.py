@@ -8,6 +8,7 @@ from .views import (
     ElementDetailView,
     FamilyDetailView,
     FamilyListView,
+    TagDetailView,
     TagListView,
 )
 
@@ -19,6 +20,7 @@ urlpatterns = [
     path(_("tags"), TagListView.as_view(), name="tag_list"),
     path(_("family/<pk>"), FamilyDetailView.as_view(), name="family_detail"),
     path(_("author/<username>"), AuthorDetailView.as_view(), name="author_detail"),
+    path(_("tag/<pk>"), TagDetailView.as_view(), name="tag_detail"),
     path(
         _("author/<username>/element/<pk>"),
         ElementDetailView.as_view(),

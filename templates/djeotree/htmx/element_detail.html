@@ -34,12 +34,12 @@
         <p>{{ element.intro }}</p>
         <ul>
           <li>{% trans "Author"%}:
-            <a href="{% url 'geotree:author_list' username=author %}">
+            <a href="{% url 'geotree:author_detail' username=author.username %}">
               {{ author.username }}
             </a>
           </li>
           <li>{% trans "Family"%}:
-            <a href="{% url 'geotree:family_list' username=author pk=family.id %}">
+            <a href="{% url 'geotree:family_detail' pk=family.id %}">
               {{ family.title }}
             </a>
           </li>

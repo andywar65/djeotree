@@ -155,6 +155,31 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
         return context
 
 
+class TagDetailView(HxPageTemplateMixin, ListView):
+    model = Element
+    context_object_name = "elements"
+    template_name = "djeotree/htmx/tag_detail.html"
+
+    def setup(self, request, *args, **kwargs):
+        super(TagDetailView, self).setup(request, *args, **kwargs)
+        self.tag = get_object_or_404(Tag, id=self.kwargs["pk"])
+
+    def get_queryset(self):
+        e_values = self.tag.element_tag_value
+        list = e_values.values_list("element_id", flat=True)
+        qs = Element.objects.filter(id__in=list, private=False)
+        if self.request.user.is_authenticated:
+            qs2 = Element.objects.filter(id__in=list, private=True)
+            qs = qs | qs2
+        return qs.order_by("family", "id")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tag"] = self.tag
+        context["mapbox_token"] = settings.MAPBOX_TOKEN
+        return context
+
+
 class ElementDetailView(HxPageTemplateMixin, DetailView):
     model = Element
     context_object_name = "element"
