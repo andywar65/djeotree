@@ -8,11 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
-from django.views.generic.dates import (  # noqa
-    DayArchiveView,
-    MonthArchiveView,
-    YearArchiveView,
-)
+from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
 from .models import Element, Family, Tag
 

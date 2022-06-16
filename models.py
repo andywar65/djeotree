@@ -107,7 +107,7 @@ class Element(models.Model):
     )
     intro = models.CharField(_("Description"), null=True, max_length=200)
     body = models.TextField(_("Text"), null=True, blank=True)
-    date = models.DateField(
+    date = models.DateTimeField(
         _("Date"),
         default=now,
     )
@@ -128,13 +128,12 @@ class Element(models.Model):
             "title": self.__str__(),
             "url": url,
         }
-        intro_str = "<small>%(intro)s</small> / " % {"intro": self.intro}
-        author_str = "<small>%(author)s</small>" % {"author": self.user.username}
+        intro_str = "<small>%(intro)s</small>" % {"intro": self.intro}
         image = self.get_first_image()
         if not image:
-            return title_str + intro_str + author_str
+            return title_str + intro_str
         image_str = '<img src="%(image)s">' % {"image": image}
-        return title_str + image_str + intro_str + author_str
+        return title_str + image_str + intro_str
 
     def __str__(self):
         return self.family.title + "-" + str(self.id)
