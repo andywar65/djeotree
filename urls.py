@@ -7,6 +7,7 @@ from .views import (
     BaseListView,
     ElementDayArchiveView,
     ElementDetailView,
+    ElementMonthArchiveView,
     FamilyDetailView,
     FamilyListView,
     TagDetailView,
@@ -26,6 +27,11 @@ urlpatterns = [
         _("author/<username>/element/<pk>"),
         ElementDetailView.as_view(),
         name="element_detail",
+    ),
+    path(
+        "<int:year>/<int:month>/",
+        ElementMonthArchiveView.as_view(),
+        name="month_detail",
     ),
     path(
         "<int:year>/<int:month>/<int:day>/",
