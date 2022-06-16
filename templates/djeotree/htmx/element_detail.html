@@ -43,7 +43,11 @@
               {{ family.title }}
             </a>
           </li>
-          <li>{{ element.date|date:"Y M d"}}</li>
+          <li>
+            <a href="{% url 'geotree:day_detail' year=element.date.year month=element.date.month day=element.date.day %}">
+              {{ element.date|date:"Y M d"}}
+            </a>
+          </li>
         </ul>
         {% if element.element_value.all %}
           <h5>{% trans "Tags"%}:</h5>
