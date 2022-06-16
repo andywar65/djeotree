@@ -217,7 +217,7 @@ class ElementDayArchiveView(HxPageTemplateMixin, DayArchiveView):
     month_format = "%m"
     day_format = "%d"
     allow_empty = True
-    template_name = "djeotree/htmx/day_list.html"
+    template_name = "djeotree/htmx/day_detail.html"
 
     def get_queryset(self):
         original = super(ElementDayArchiveView, self).get_queryset()

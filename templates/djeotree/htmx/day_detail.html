@@ -1,0 +1,34 @@
+{% load leaflet_tags %}
+{% load i18n %}
+
+{% include "djeotree/includes/element_script.html" %}
+<div class="row">
+  <div class="col" style="margin-bottom: 20px">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">
+          {% trans "Date"%}: {{ day }}
+        </h4>
+      </div>
+      <div class="card-body">
+        {% if elements %}
+          <h5>{% trans "Elements"%}:</h5>
+          <ul>
+            {% for element in elements %}
+              <li>
+                <a href="{% url 'geotree:element_detail' username=element.user.username pk=element.id %}">
+                  {{ element }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>{% trans "No elements yet" %}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+    {% leaflet_map "mymap" callback="window.map_init" %}
+  </div>
+</div>
