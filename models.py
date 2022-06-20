@@ -13,12 +13,6 @@ User = get_user_model()
 
 
 class Tag(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="user_tag",
-        verbose_name=_("Author"),
-    )
     title = models.CharField(
         _("Title"),
         help_text=_("Tag name"),
@@ -28,7 +22,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = _("Tag")
         verbose_name_plural = _("Tags")
-        ordering = ("user", "title")
+        ordering = ("title",)
 
     def __str__(self):
         return self.title
@@ -37,12 +31,6 @@ class Tag(models.Model):
 class Family(MP_Node):
     node_order_by = ["title"]
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="user_family",
-        verbose_name=_("Author"),
-    )
     title = models.CharField(
         _("Title"),
         help_text=_("Family name"),
