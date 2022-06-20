@@ -15,13 +15,13 @@
     const base_map = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
         attribution: '',
-        maxZoom: 23,
+        maxZoom: 19,
       }).addTo(map);
 
     const sat_map = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
       {
         attribution: 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 23,
+        maxZoom: 19,
         tileSize: 512,
         zoomOffset: -1,
         id: "mapbox/satellite-v9",
