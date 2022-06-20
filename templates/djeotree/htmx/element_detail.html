@@ -83,17 +83,26 @@
           <p>{% trans "No tags yet" %}</p>
         {% endif %}
       </div>
+      {% if user == author %}
+        <div class="card-footer">
+          <a href="/admin/djeotree/element/{{ element.id }}/change/">{% trans "Modify" %}</a>
+        </div>
+      {% endif %}
     </div>
   </div>
-  <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-    {% leaflet_map "mymap" callback="window.map_init" %}
+  <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12" style="margin-bottom: 20px">
+    {% include 'djeotree/includes/gallery.html' %}
   </div>
 </div>
 <div class="row">
   <div class="col" style="margin-bottom: 20px">
-    {{ element.body|safe }}
+    <div class="card" style="min-height: 600px">
+      <div class="card-body">
+        {{ element.body|safe }}
+      </div>
+    </div>
   </div>
-  <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-    {% include 'djeotree/includes/gallery.html' %}
+  <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+    {% leaflet_map "mymap" callback="window.map_init" %}
   </div>
 </div>

@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 # from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, FormView, ListView
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
 from .models import Element, Family, Tag
@@ -286,3 +286,7 @@ class ElementYearArchiveView(HxPageTemplateMixin, YearArchiveView):
         context = super().get_context_data(**kwargs)
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
+
+
+class ElementCreateView(HxPageTemplateMixin, FormView):
+    template_name = "djeotree/htmx/element_create.html"
