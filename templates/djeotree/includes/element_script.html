@@ -13,5 +13,8 @@
     let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
     markers.addTo(map);
     map.fitBounds(markers.getBounds(), {padding: [50,50]});
+    collection = {{ lines|geojsonfeature:"popupContent"|safe }};
+    let lines = L.geoJson(collection, {onEachFeature: onEachFeature});
+    lines.addTo(map);
   }
 </script>

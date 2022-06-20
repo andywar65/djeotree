@@ -57,12 +57,14 @@ class FamilyListView(HxPageTemplateMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        roots = Family.objects.filter(depth=1)
+        families = Family.objects.all()
+        roots = families.filter(depth=1)
         list = []
         for root in roots:
             annotated = Family.get_annotated_list(parent=root)
             list.append(annotated)
         context["families"] = list
+        context["lines"] = families
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 

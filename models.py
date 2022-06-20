@@ -49,6 +49,19 @@ class Family(MP_Node):
         verbose_name = _("Element Family")
         verbose_name_plural = _("Element Families")
 
+    @property
+    def popupContent(self):
+        url = reverse(
+            "geotree:family_detail",
+            kwargs={"pk": self.id},
+        )
+        title_str = '<h5><a href="%(url)s">%(title)s</a></h5>' % {
+            "title": self.__str__(),
+            "url": url,
+        }
+        intro_str = "<small>%(intro)s</small>" % {"intro": self.intro}
+        return title_str + intro_str
+
     def __str__(self):
         prefix = ""
         for i in range(self.depth - 1):
@@ -134,17 +147,12 @@ class Element(models.Model):
     def __str__(self):
         return self.family.title + "-" + str(self.id)
 
-    def get_user(self):
-        return self.family.user
-
     def get_first_image(self):
         image = self.element_image.first()
         if not image:
             return
         path = image.fb_image.version_generate("popup").path
         return settings.MEDIA_URL + path
-
-    get_user.short_description = _("Author")
 
 
 class ElementTagValue(models.Model):
