@@ -159,7 +159,10 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["family"] = self.family
-        context["lines"] = self.family.get_descendants()
+        # combine descendants and self family querysets
+        context["lines"] = self.family.get_descendants() | Family.objects.filter(
+            id=self.family.id
+        )
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
