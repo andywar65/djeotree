@@ -145,19 +145,21 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
 
     def get_queryset(self):
         list = [self.family.id]
-        children = self.family.get_children()
+        children = self.family.get_descendants()
         for child in children:
             list.append(child.id)
         qs = Element.objects.filter(family_id__in=list, private=False)
         if self.request.user.is_authenticated:
-            qs2 = Element.objects.filter(family_id__in=list, private=True)
+            qs2 = Element.objects.filter(
+                user_id=self.request.user.uuid, family_id__in=list, private=True
+            )
             qs = qs | qs2
         return qs.order_by("family", "id")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["family"] = self.family
-        context["lines"] = self.family
+        context["lines"] = self.family.get_descendants()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
@@ -176,7 +178,9 @@ class TagDetailView(HxPageTemplateMixin, ListView):
         list = e_values.values_list("element_id", flat=True)
         qs = Element.objects.filter(id__in=list, private=False)
         if self.request.user.is_authenticated:
-            qs2 = Element.objects.filter(id__in=list, private=True)
+            qs2 = Element.objects.filter(
+                user_id=self.request.user.uuid, id__in=list, private=True
+            )
             qs = qs | qs2
         return qs.order_by("family", "id")
 
