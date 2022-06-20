@@ -26,3 +26,5 @@ def create_element_tags(sender, instance, created, **kwargs):
                 tag_id=fam_value.tag.id, element_id=instance.id, value=fam_value.value
             )
             elm_value.save()
+        # update parent
+        parent.save()

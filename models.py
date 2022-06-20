@@ -67,6 +67,14 @@ class Family(MP_Node):
             prefix = prefix + "-"
         return prefix + self.title
 
+    def save(self, *args, **kwargs):
+        coords = []
+        elements = self.family_element.all().order_by("date")
+        for e in elements:
+            coords.append(e.geom["coordinates"])
+        self.geom = {"type": "MultiLineString", "coordinates": [coords]}
+        super(Family, self).save(*args, **kwargs)
+
 
 class TagValue(models.Model):
     tag = models.ForeignKey(
