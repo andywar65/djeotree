@@ -9,6 +9,8 @@ from filebrowser.base import FileObject
 from filebrowser.fields import FileBrowseField
 from treebeard.mp_tree import MP_Node
 
+from .utils import cad2hex
+
 User = get_user_model()
 
 
@@ -56,11 +58,11 @@ class Family(MP_Node):
             kwargs={"pk": self.id},
         )
         title_str = '<h5><a href="%(url)s">%(title)s</a></h5>' % {
-            "title": self.__str__(),
+            "title": self.title,
             "url": url,
         }
         intro_str = "<small>%(intro)s</small>" % {"intro": self.intro}
-        return title_str + intro_str
+        return {"content": title_str + intro_str, "color": cad2hex(self.id)}
 
     def __str__(self):
         prefix = ""
@@ -140,9 +142,9 @@ class Element(models.Model):
         intro_str = "<small>%(intro)s</small>" % {"intro": self.intro}
         image = self.get_first_image()
         if not image:
-            return title_str + intro_str
+            return {"content": title_str + intro_str}
         image_str = '<img src="%(image)s">' % {"image": image}
-        return title_str + image_str + intro_str
+        return {"content": title_str + image_str + intro_str}
 
     def __str__(self):
         return self.family.title + "-" + str(self.id)

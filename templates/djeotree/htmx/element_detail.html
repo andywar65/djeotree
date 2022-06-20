@@ -5,11 +5,30 @@
 <script type="text/javascript">
   function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.popupContent) {
-      layer.bindPopup(feature.properties.popupContent, {minWidth: 256});
+      layer.bindPopup(feature.properties.popupContent.content, {minWidth: 256});
     }
   }
   function map_init(map, options) {
-    {% include "djeotree/includes/base_maps.html" %}
+    const base_map = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution: '',
+        maxZoom: 23,
+      }).addTo(map);
+
+    const sat_map = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+      {
+        attribution: 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 23,
+        tileSize: 512,
+        zoomOffset: -1,
+        id: "mapbox/satellite-v9",
+        accessToken: "{{ mapbox_token }}"
+      });
+
+    const baseMaps = {
+      "Base": base_map,
+      "Satellite": sat_map
+    };
     L.control.layers(baseMaps).addTo(map);
     let collection = {{ element|geojsonfeature:"popupContent"|safe }};
     let marker = L.geoJson(collection, {onEachFeature: onEachFeature});
