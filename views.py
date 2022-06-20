@@ -39,6 +39,7 @@ class BaseListView(HxPageTemplateMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["lines"] = Family.objects.all()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
@@ -85,6 +86,7 @@ class AuthorListView(HxPageTemplateMixin, ListView):
         context = super().get_context_data(**kwargs)
         authors = Element.objects.values_list("user__username", flat=True)
         context["authors"] = list(dict.fromkeys(authors))
+        context["lines"] = Family.objects.all()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
@@ -104,6 +106,7 @@ class TagListView(HxPageTemplateMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tags"] = Tag.objects.all()
+        context["lines"] = Family.objects.all()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
@@ -154,6 +157,7 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["family"] = self.family
+        context["lines"] = self.family
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
