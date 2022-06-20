@@ -6,6 +6,14 @@
       layer.bindPopup(feature.properties.popupContent, {minWidth: 256});
     }
   }
+  function setLineStyle(feature) {
+    let letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * letters.length)];
+    }
+    return {"color": color};
+  }
   function map_init(map, options) {
     {% include "djeotree/includes/base_maps.html" %}
     L.control.layers(baseMaps).addTo(map);
@@ -14,7 +22,7 @@
     markers.addTo(map);
     map.fitBounds(markers.getBounds(), {padding: [50,50]});
     collection = {{ lines|geojsonfeature:"popupContent"|safe }};
-    let lines = L.geoJson(collection, {onEachFeature: onEachFeature});
+    let lines = L.geoJson(collection, {style: setLineStyle, onEachFeature: onEachFeature});
     lines.addTo(map);
   }
 </script>

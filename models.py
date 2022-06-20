@@ -70,7 +70,7 @@ class Family(MP_Node):
 
     def save(self, *args, **kwargs):
         coords = []
-        elements = self.family_element.all().order_by("date")
+        elements = self.family_element.filter(private=False).order_by("date")
         for e in elements:
             coords.append(e.geom["coordinates"])
         self.geom = {"type": "MultiLineString", "coordinates": [coords]}
