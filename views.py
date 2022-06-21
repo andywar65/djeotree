@@ -1,15 +1,16 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-
-# from django.urls import reverse
+from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, FormView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
+from .forms import ElementCreateForm
 from .models import Element, Family, Tag
 
 User = get_user_model()
@@ -288,5 +289,17 @@ class ElementYearArchiveView(HxPageTemplateMixin, YearArchiveView):
         return context
 
 
-class ElementCreateView(HxPageTemplateMixin, FormView):
+class ElementCreateView(LoginRequiredMixin, HxPageTemplateMixin, CreateView):
+    model = Element
+    form_class = ElementCreateForm
     template_name = "djeotree/htmx/element_create.html"
+
+    def get_initial(self):
+        initial = super(ElementCreateView, self).get_initial()
+        initial["user"] = self.request.user
+        return initial
+
+    def get_success_url(self):
+        return reverse(
+            "geotree:author_detail", kwargs={"username": self.request.user.username}
+        )

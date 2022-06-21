@@ -5,6 +5,7 @@ from .views import (
     AuthorDetailView,
     AuthorListView,
     BaseListView,
+    ElementCreateView,
     ElementDayArchiveView,
     ElementDetailView,
     ElementMonthArchiveView,
@@ -24,6 +25,11 @@ urlpatterns = [
     path(_("family/<pk>"), FamilyDetailView.as_view(), name="family_detail"),
     path(_("author/<username>"), AuthorDetailView.as_view(), name="author_detail"),
     path(_("tag/<pk>"), TagDetailView.as_view(), name="tag_detail"),
+    path(
+        _("author/<username>/element/add"),
+        ElementCreateView.as_view(),
+        name="element_create",
+    ),
     path(
         _("author/<username>/element/<pk>"),
         ElementDetailView.as_view(),
