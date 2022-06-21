@@ -7,10 +7,16 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
-from .forms import ElementCreateForm
+from .forms import ElementCreateForm, ElementDeleteForm
 from .models import Element, Family, Tag
 
 User = get_user_model()
@@ -327,6 +333,29 @@ class ElementUpdateView(LoginRequiredMixin, HxPageTemplateMixin, UpdateView):
         if form.instance.user != self.request.user:
             raise PermissionDenied
         return super(ElementUpdateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse(
+            "geotree:author_detail", kwargs={"username": self.request.user.username}
+        )
+
+
+class ElementDeleteView(LoginRequiredMixin, HxPageTemplateMixin, DeleteView):
+    model = Element
+    form_class = ElementDeleteForm
+    template_name = "djeotree/htmx/element_delete.html"
+
+    def get_object(self, queryset=None):
+        self.object = super(ElementDeleteView, self).get_object(queryset=None)
+        user = get_object_or_404(User, username=self.kwargs["username"])
+        if user != self.object.user:
+            raise Http404(_("Element does not belong to User"))
+        return self.object
+
+    def form_valid(self, form):
+        if self.object.user != self.request.user:
+            raise PermissionDenied
+        return super(ElementDeleteView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse(

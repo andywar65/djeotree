@@ -7,6 +7,7 @@ from .views import (
     BaseListView,
     ElementCreateView,
     ElementDayArchiveView,
+    ElementDeleteView,
     ElementDetailView,
     ElementMonthArchiveView,
     ElementUpdateView,
@@ -40,6 +41,11 @@ urlpatterns = [
         _("author/<username>/element/<pk>/change"),
         ElementUpdateView.as_view(),
         name="element_update",
+    ),
+    path(
+        _("author/<username>/element/<pk>/delete"),
+        ElementDeleteView.as_view(),
+        name="element_delete",
     ),
     path(
         "<int:year>/",

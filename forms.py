@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth import get_user_model
 from django.forms import ModelChoiceField, ModelForm
 from django.utils.translation import gettext_lazy as _
@@ -17,3 +18,7 @@ class ElementCreateForm(ModelForm):
         model = Element
         fields = ["user", "family", "intro", "geom", "private"]
         widgets = {"geom": LeafletWidget()}
+
+
+class ElementDeleteForm(forms.Form):
+    delete = forms.BooleanField(label=_("Check and confirm"), required=True)

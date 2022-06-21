@@ -1,0 +1,9 @@
+{% extends "base_menu.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Delete element" %}{% endblock %}
+
+{% block content %}
+  {% include "djeotree/htmx/element_delete.html" %}
+{% endblock %}
