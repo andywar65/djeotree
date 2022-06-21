@@ -31,6 +31,12 @@
             {% bootstrap_form form %}
             <input class="btn btn-primary" style="margin-bottom: 15px;" type="submit" value="{% trans 'Modify' %}" />
           </form>
+          <a class="btn btn-danger"
+            hx-get="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}"
+            hx-target="#content"
+            hx-push-url="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}">
+            {% trans 'Delete' %}
+          </a>
         </div>
       </div>
       <div class="card mx-auto" style="max-width: 480px; margin-top: 20px">
