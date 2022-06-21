@@ -299,6 +299,11 @@ class ElementCreateView(LoginRequiredMixin, HxPageTemplateMixin, CreateView):
         initial["user"] = self.request.user
         return initial
 
+    def form_valid(self, form):
+        if form.instance.user != self.request.user:
+            raise PermissionDenied
+        return super(ElementCreateView, self).form_valid(form)
+
     def get_success_url(self):
         return reverse(
             "geotree:author_detail", kwargs={"username": self.request.user.username}
