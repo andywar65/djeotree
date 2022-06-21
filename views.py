@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
 from .forms import ElementCreateForm
@@ -303,6 +303,31 @@ class ElementCreateView(LoginRequiredMixin, HxPageTemplateMixin, CreateView):
         if form.instance.user != self.request.user:
             raise PermissionDenied
         return super(ElementCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse(
+            "geotree:author_detail", kwargs={"username": self.request.user.username}
+        )
+
+
+class ElementUpdateView(LoginRequiredMixin, HxPageTemplateMixin, UpdateView):
+    model = Element
+    form_class = ElementCreateForm
+    template_name = "djeotree/htmx/element_update.html"
+
+    def get_object(self, queryset=None):
+        self.object = super(ElementUpdateView, self).get_object(queryset=None)
+        user = get_object_or_404(User, username=self.kwargs["username"])
+        if user != self.object.user:
+            raise Http404(_("Element does not belong to User"))
+        if self.object.private and self.object.user != self.request.user:
+            raise PermissionDenied
+        return self.object
+
+    def form_valid(self, form):
+        if form.instance.user != self.request.user:
+            raise PermissionDenied
+        return super(ElementUpdateView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse(

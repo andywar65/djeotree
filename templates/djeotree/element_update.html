@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% load leaflet_tags %}
+{% load bootstrap5 %}
+{% load i18n %}
+
+{% block extra-head %}
+  {% leaflet_js plugins="forms" %}
+  {% leaflet_css plugins="forms" %}
+  <style>
+    .leaflet-container {  /* all maps */
+      height: 600px;
+      margin-bottom: 20px;
+    }
+  </style>
+{% endblock extra-head %}
+
+{% block menucont %}
+  {% include 'navbar.html' %}
+  <main class="flex-shrink-0">
+    <div id="content" class="container">
+      <div class="card mx-auto" style="max-width: 480px; margin-top: 60px">
+        <div class="card-header">
+          <h4 class="card-title">
+            {% trans "Modify element"%}
+          </h4>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input class="btn btn-primary" style="margin-bottom: 15px;" type="submit" value="{% trans 'Modify' %}" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  {% include 'footer.html' %}
+{% endblock menucont %}
