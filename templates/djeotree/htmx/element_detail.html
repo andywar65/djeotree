@@ -85,7 +85,7 @@
       </div>
       {% if user == author %}
         <div class="card-footer">
-          <a href="/admin/djeotree/element/{{ element.id }}/change/">{% trans "Modify" %}</a>
+          <a href="{% url 'geotree:element_update' username=author.username pk=element.id %}">{% trans "Modify" %}</a>
         </div>
       {% endif %}
     </div>

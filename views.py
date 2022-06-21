@@ -306,7 +306,8 @@ class ElementCreateView(LoginRequiredMixin, HxPageTemplateMixin, CreateView):
 
     def get_success_url(self):
         return reverse(
-            "geotree:author_detail", kwargs={"username": self.request.user.username}
+            "geotree:element_update",
+            kwargs={"username": self.request.user.username, "pk": self.object.id},
         )
 
 
