@@ -3,6 +3,7 @@
 {% load leaflet_tags %}
 {% load bootstrap5 %}
 {% load i18n %}
+{% load fb_versions %}
 
 {% block extra-head %}
   {% leaflet_js plugins="forms" %}
@@ -22,24 +23,43 @@
       <div class="card mx-auto" style="max-width: 480px; margin-top: 60px">
         <div class="card-header">
           <h4 class="card-title">
-            {% trans "Modify element"%}
+            {% trans "Modify element"%}: {{ element }}
           </h4>
         </div>
         <div class="card-body">
           <form method="POST" action="">
             {% csrf_token %}
             {% bootstrap_form form %}
-            <input class="btn btn-primary" style="margin-bottom: 15px;" type="submit" value="{% trans 'Modify' %}" />
+            <input class="btn btn-primary" type="submit" value="{% trans 'Modify' %}" />
+            <a class="btn btn-danger"
+              hx-get="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}"
+              hx-target="#content"
+              hx-push-url="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}">
+              {% trans 'Delete' %}
+            </a>
           </form>
-          <a class="btn btn-danger"
-            hx-get="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}"
-            hx-target="#content"
-            hx-push-url="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}">
-            {% trans 'Delete' %}
-          </a>
         </div>
       </div>
       <div class="card mx-auto" style="max-width: 480px; margin-top: 20px">
+        <div class="card-header">
+          <h4>{% trans "Images"%}:</h4>
+        </div>
+        <div class="card-body">
+          {% if element.element_image.all %}
+            {% for image in element.element_image.all %}
+              <div class="card mx-auto" style="margin-bottom: 20px">
+                <img src="{% version image.fb_image 'big' %}" class="card-img-top" alt="{{ image.description }}">
+                <div class="card-body">
+                  <p class="card-text">{{ image.description }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>{% trans "No images yet" %}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card mx-auto mt-20" style="max-width: 480px; margin-top: 20px">
         <div class="card-header">
           <h4>{% trans "Tags"%}:</h4>
         </div>
