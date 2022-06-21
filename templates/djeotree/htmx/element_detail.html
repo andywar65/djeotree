@@ -91,18 +91,22 @@
     </div>
   </div>
   <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12" style="margin-bottom: 20px">
-    {% include 'djeotree/includes/gallery.html' %}
+    {% if images %}
+      {% include 'djeotree/includes/gallery.html' %}
+    {% else %}
+      <p>{% trans "No images yet" %}</p>
+    {% endif %}
   </div>
 </div>
 <div class="row">
-  <div class="col" style="margin-bottom: 20px">
+  <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+    {% leaflet_map "mymap" callback="window.map_init" %}
+  </div>
+  <div class="col">
     <div class="card" style="min-height: 600px">
       <div class="card-body">
         {{ element.body|safe }}
       </div>
     </div>
-  </div>
-  <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-    {% leaflet_map "mymap" callback="window.map_init" %}
   </div>
 </div>
