@@ -33,6 +33,24 @@
           </form>
         </div>
       </div>
+      <div class="card mx-auto" style="max-width: 480px; margin-top: 20px">
+        <div class="card-header">
+          <h4>{% trans "Tags"%}:</h4>
+        </div>
+        <div class="card-body">
+          {% if element.element_value.all %}
+            {% for value in element.element_value.all %}
+              <div class="card mx-auto" style="margin-bottom: 20px">
+                <div class="card-body">
+                  <strong>{{ value.tag.title }}</strong>: {{ value.value }}
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>{% trans "No tags yet" %}</p>
+          {% endif %}
+        </div>
+      </div>
     </div>
   </main>
   {% include 'footer.html' %}

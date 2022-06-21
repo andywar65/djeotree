@@ -321,8 +321,6 @@ class ElementUpdateView(LoginRequiredMixin, HxPageTemplateMixin, UpdateView):
         user = get_object_or_404(User, username=self.kwargs["username"])
         if user != self.object.user:
             raise Http404(_("Element does not belong to User"))
-        if self.object.private and self.object.user != self.request.user:
-            raise PermissionDenied
         return self.object
 
     def form_valid(self, form):
