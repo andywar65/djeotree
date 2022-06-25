@@ -3,7 +3,6 @@
 {% load leaflet_tags %}
 {% load bootstrap5 %}
 {% load i18n %}
-{% load fb_versions %}
 
 {% block extra-head %}
   {% leaflet_js plugins="forms" %}
@@ -47,16 +46,16 @@
         <div class="card-body">
           {% if element.element_image.all %}
             {% for image in element.element_image.all %}
-              <div class="card mx-auto" style="margin-bottom: 20px">
-                <img src="{% version image.fb_image 'big' %}" class="card-img-top" alt="{{ image.description }}">
-                <div class="card-body">
-                  <p class="card-text">{{ image.description }}</p>
-                </div>
-              </div>
+              {% include "djeotree/htmx/image_detail.html" %}
             {% endfor %}
           {% else %}
             <p>{% trans "No images yet" %}</p>
           {% endif %}
+          <a class="btn btn-primary"
+            hx-get="{% url 'geotree:image_create' pk=element.id %}"
+            hx-swap="beforebegin">
+            {% trans 'Add image' %}
+          </a>
         </div>
       </div>
       <div class="card mx-auto mt-20" style="max-width: 480px; margin-top: 20px">

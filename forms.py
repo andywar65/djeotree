@@ -4,7 +4,7 @@ from django.forms import ModelChoiceField, ModelForm
 from django.utils.translation import gettext_lazy as _
 from leaflet.forms.widgets import LeafletWidget
 
-from .models import Element
+from .models import Element, ElementImage
 
 User = get_user_model()
 
@@ -22,3 +22,13 @@ class ElementCreateForm(ModelForm):
 
 class ElementDeleteForm(forms.Form):
     delete = forms.BooleanField(label=_("Check and confirm"), required=True)
+
+
+class ImageCreateForm(ModelForm):
+    element = ModelChoiceField(
+        label=_("Element"), queryset=Element.objects.all(), disabled=True
+    )
+
+    class Meta:
+        model = ElementImage
+        fields = ["element", "image", "description"]

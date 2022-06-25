@@ -1,0 +1,15 @@
+{% load fb_versions %}
+{% load i18n %}
+{% load bootstrap5 %}
+
+<div id="image-create" class="card mx-auto" style="margin-bottom: 20px">
+  <div class="card-body">
+    <form hx-post="{% url 'image_create' pk=element.id %}"
+      hx-target="#image-create"
+      hx-swap="outerHTML"
+      hx-encoding="multipart/form-data">
+      {% bootstrap_form form %}
+      <button class="btn btn-primary" type="submit">{% trans "save" %}</button>
+    </form>
+  </div>
+</div>

@@ -16,8 +16,8 @@ from django.views.generic import (
 )
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
-from .forms import ElementCreateForm, ElementDeleteForm
-from .models import Element, Family, Tag
+from .forms import ElementCreateForm, ElementDeleteForm, ImageCreateForm
+from .models import Element, ElementImage, Family, Tag
 
 User = get_user_model()
 
@@ -361,3 +361,32 @@ class ElementDeleteView(LoginRequiredMixin, HxPageTemplateMixin, DeleteView):
         return reverse(
             "geotree:author_detail", kwargs={"username": self.request.user.username}
         )
+
+
+class ImageDetailView(LoginRequiredMixin, DetailView):
+    model = ElementImage
+    context_object_name = "image"
+    template_name = "djeotree/htmx/image_detail.html"
+
+
+class ImageCreateView(LoginRequiredMixin, CreateView):
+    model = ElementImage
+    form_class = ImageCreateForm
+    template_name = "djeotree/htmx/image_create.html"
+
+    def setup(self, request, *args, **kwargs):
+        super(ImageCreateView, self).setup(request, *args, **kwargs)
+        self.element = get_object_or_404(Element, id=self.kwargs["pk"])
+
+    def get_initial(self):
+        initial = super(ImageCreateView, self).get_initial()
+        initial["element"] = self.element
+        return initial
+
+    def form_valid(self, form):
+        if self.element.user != self.request.user:
+            raise PermissionDenied
+        return super(ImageCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("geotree:image_detail", kwargs={"pk": self.object.id})

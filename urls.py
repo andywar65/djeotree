@@ -14,6 +14,8 @@ from .views import (
     ElementYearArchiveView,
     FamilyDetailView,
     FamilyListView,
+    ImageCreateView,
+    ImageDetailView,
     TagDetailView,
     TagListView,
 )
@@ -62,4 +64,6 @@ urlpatterns = [
         ElementDayArchiveView.as_view(),
         name="day_detail",
     ),
+    path(_("image/add/element/<pk>"), ImageCreateView.as_view(), name="image_create"),
+    path(_("image/<pk>"), ImageDetailView.as_view(), name="image_detail"),
 ]

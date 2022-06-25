@@ -1,0 +1,8 @@
+{% load fb_versions %}
+
+<div class="card mx-auto" style="margin-bottom: 20px">
+  <img src="{% version image.fb_image 'big' %}" class="card-img-top" alt="{{ image.description }}">
+  <div class="card-body">
+    <p class="card-text">{{ image.description }}</p>
+  </div>
+</div>
