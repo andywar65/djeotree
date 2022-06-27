@@ -66,11 +66,7 @@
         <div class="card-body">
           {% if element.element_value.all %}
             {% for value in element.element_value.all %}
-              <div class="card mx-auto" style="margin-bottom: 20px">
-                <div class="card-body">
-                  <strong>{{ value.tag.title }}</strong>: {{ value.value }}
-                </div>
-              </div>
+              {% include "djeotree/htmx/value_detail.html" %}
             {% endfor %}
           {% else %}
             <p>{% trans "No tags yet" %}</p>

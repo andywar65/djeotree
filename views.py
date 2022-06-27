@@ -18,7 +18,7 @@ from django.views.generic import (
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
 from .forms import ElementCreateForm, ElementDeleteForm, ImageCreateForm
-from .models import Element, ElementImage, Family, Tag
+from .models import Element, ElementImage, ElementTagValue, Family, Tag
 
 User = get_user_model()
 
@@ -409,3 +409,9 @@ class ImageDeleteView(LoginRequiredMixin, TemplateView):
         if self.user != self.request.user:
             raise PermissionDenied
         self.image.delete()
+
+
+class ValueDetailView(LoginRequiredMixin, DetailView):
+    model = ElementTagValue
+    context_object_name = "value"
+    template_name = "djeotree/htmx/value_detail.html"
