@@ -2,7 +2,14 @@
 
 <div id="value-{{ value.id }}" class="card mx-auto" style="margin-bottom: 20px">
   <div class="card-body">
-    <strong>{{ value.tag.title }}</strong>: {{ value.value }}
+    <p><strong>{{ value.tag.title }}</strong>: {{ value.value }}</p>
+    <button class="btn btn-primary"
+      hx-get="{% url 'geotree:value_change' pk=value.id %}"
+      hx-target="#value-{{ value.id }}"
+      hx-swap="outerHTML">
+      {% trans "Modify" %}
+      <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+    </button>
     <button class="btn btn-danger"
       hx-get="{% url 'geotree:value_delete' pk=value.id %}"
       hx-target="#value-{{ value.id }}"

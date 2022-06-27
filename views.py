@@ -451,6 +451,20 @@ class ValueCreateView(LoginRequiredMixin, CreateView):
         return reverse("geotree:value_detail", kwargs={"pk": self.object.id})
 
 
+class ValueUpdateView(LoginRequiredMixin, UpdateView):
+    model = ElementTagValue
+    form_class = ValueCreateForm
+    template_name = "djeotree/htmx/value_change.html"
+
+    def form_valid(self, form):
+        if self.object.element.user != self.request.user:
+            raise PermissionDenied
+        return super(ValueUpdateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("geotree:value_detail", kwargs={"pk": self.object.id})
+
+
 class ValueDeleteView(LoginRequiredMixin, TemplateView):
     template_name = "djeotree/htmx/value_delete.html"
 

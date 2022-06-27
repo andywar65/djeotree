@@ -22,6 +22,7 @@ from .views import (
     ValueCreateView,
     ValueDeleteView,
     ValueDetailView,
+    ValueUpdateView,
 )
 
 app_name = "geotree"
@@ -73,5 +74,6 @@ urlpatterns = [
     path(_("image/<pk>/delete"), ImageDeleteView.as_view(), name="image_delete"),
     path(_("value/add/element/<pk>/"), ValueCreateView.as_view(), name="value_create"),
     path(_("value/<pk>"), ValueDetailView.as_view(), name="value_detail"),
+    path(_("value/<pk>/change"), ValueUpdateView.as_view(), name="value_change"),
     path(_("value/<pk>/delete"), ValueDeleteView.as_view(), name="value_delete"),
 ]
