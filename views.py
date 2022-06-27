@@ -415,3 +415,15 @@ class ValueDetailView(LoginRequiredMixin, DetailView):
     model = ElementTagValue
     context_object_name = "value"
     template_name = "djeotree/htmx/value_detail.html"
+
+
+class ValueDeleteView(LoginRequiredMixin, TemplateView):
+    template_name = "djeotree/htmx/value_delete.html"
+
+    def setup(self, request, *args, **kwargs):
+        super(ValueDeleteView, self).setup(request, *args, **kwargs)
+        self.value = get_object_or_404(ElementTagValue, id=self.kwargs["pk"])
+        self.user = self.value.element.user
+        if self.user != self.request.user:
+            raise PermissionDenied
+        self.value.delete()

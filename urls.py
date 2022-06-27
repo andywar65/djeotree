@@ -19,6 +19,7 @@ from .views import (
     ImageDetailView,
     TagDetailView,
     TagListView,
+    ValueDeleteView,
     ValueDetailView,
 )
 
@@ -70,4 +71,5 @@ urlpatterns = [
     path(_("image/<pk>"), ImageDetailView.as_view(), name="image_detail"),
     path(_("image/<pk>/delete"), ImageDeleteView.as_view(), name="image_delete"),
     path(_("value/<pk>"), ValueDetailView.as_view(), name="value_detail"),
+    path(_("value/<pk>/delete"), ValueDeleteView.as_view(), name="value_delete"),
 ]
