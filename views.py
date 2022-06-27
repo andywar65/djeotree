@@ -12,6 +12,7 @@ from django.views.generic import (
     DeleteView,
     DetailView,
     ListView,
+    TemplateView,
     UpdateView,
 )
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
@@ -396,3 +397,15 @@ class ImageCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse("geotree:image_detail", kwargs={"pk": self.object.id})
+
+
+class ImageDeleteView(LoginRequiredMixin, TemplateView):
+    template_name = "djeotree/htmx/image_delete.html"
+
+    def setup(self, request, *args, **kwargs):
+        super(ImageDeleteView, self).setup(request, *args, **kwargs)
+        self.image = get_object_or_404(ElementImage, id=self.kwargs["pk"])
+        self.user = self.image.element.user
+        if self.user != self.request.user:
+            raise PermissionDenied
+        self.image.delete()

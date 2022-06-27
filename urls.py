@@ -15,6 +15,7 @@ from .views import (
     FamilyDetailView,
     FamilyListView,
     ImageCreateView,
+    ImageDeleteView,
     ImageDetailView,
     TagDetailView,
     TagListView,
@@ -66,4 +67,5 @@ urlpatterns = [
     ),
     path(_("image/add/element/<pk>/"), ImageCreateView.as_view(), name="image_create"),
     path(_("image/<pk>"), ImageDetailView.as_view(), name="image_detail"),
+    path(_("image/<pk>/delete"), ImageDeleteView.as_view(), name="image_delete"),
 ]
