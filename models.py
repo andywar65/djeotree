@@ -9,7 +9,7 @@ from filebrowser.base import FileObject
 from filebrowser.fields import FileBrowseField
 from treebeard.mp_tree import MP_Node
 
-from .utils import cad2hex
+from .utils import cad2hex, check_wide_image
 
 User = get_user_model()
 
@@ -223,6 +223,6 @@ class ElementImage(models.Model):
         if self.image:
             # image is saved on the front end, passed to fb_image and deleted
             self.fb_image = FileObject(str(self.image))
-            # check_tall_image(self.fb_image)
             self.image = None
             super(ElementImage, self).save(*args, **kwargs)
+            check_wide_image(self.fb_image)
