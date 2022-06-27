@@ -4,7 +4,7 @@ from django.forms import ModelChoiceField, ModelForm
 from django.utils.translation import gettext_lazy as _
 from leaflet.forms.widgets import LeafletWidget
 
-from .models import Element, ElementImage
+from .models import Element, ElementImage, ElementTagValue
 
 User = get_user_model()
 
@@ -32,3 +32,13 @@ class ImageCreateForm(ModelForm):
     class Meta:
         model = ElementImage
         fields = ["element", "image", "description"]
+
+
+class ValueCreateForm(ModelForm):
+    element = ModelChoiceField(
+        label=_("Element"), queryset=Element.objects.all(), disabled=True
+    )
+
+    class Meta:
+        model = ElementTagValue
+        fields = ["element", "tag", "value"]

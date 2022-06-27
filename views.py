@@ -17,7 +17,12 @@ from django.views.generic import (
 )
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
-from .forms import ElementCreateForm, ElementDeleteForm, ImageCreateForm
+from .forms import (
+    ElementCreateForm,
+    ElementDeleteForm,
+    ImageCreateForm,
+    ValueCreateForm,
+)
 from .models import Element, ElementImage, ElementTagValue, Family, Tag
 
 User = get_user_model()
@@ -415,6 +420,35 @@ class ValueDetailView(LoginRequiredMixin, DetailView):
     model = ElementTagValue
     context_object_name = "value"
     template_name = "djeotree/htmx/value_detail.html"
+
+
+class ValueCreateView(LoginRequiredMixin, CreateView):
+    model = ElementTagValue
+    form_class = ValueCreateForm
+    template_name = "djeotree/htmx/value_create.html"
+
+    def setup(self, request, *args, **kwargs):
+        super(ValueCreateView, self).setup(request, *args, **kwargs)
+        self.element = get_object_or_404(Element, id=self.kwargs["pk"])
+
+    def get_initial(self):
+        initial = super(ValueCreateView, self).get_initial()
+        initial["element"] = self.element
+        return initial
+
+    def form_valid(self, form):
+        if self.element.user != self.request.user:
+            raise PermissionDenied
+        return super(ValueCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["element"] = self.element
+        context["random_string"] = get_random_string(7)
+        return context
+
+    def get_success_url(self):
+        return reverse("geotree:value_detail", kwargs={"pk": self.object.id})
 
 
 class ValueDeleteView(LoginRequiredMixin, TemplateView):

@@ -71,6 +71,12 @@
           {% else %}
             <p>{% trans "No tags yet" %}</p>
           {% endif %}
+          <a class="btn btn-primary"
+            hx-get="{% url 'geotree:value_create' pk=element.id %}"
+            hx-swap="beforebegin">
+            {% trans 'Add tag value' %}
+            <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+          </a>
         </div>
       </div>
     </div>

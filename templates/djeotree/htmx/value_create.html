@@ -1,0 +1,16 @@
+{% load i18n %}
+{% load bootstrap5 %}
+
+<div id="value-create-{{ random_string }}" class="card mx-auto" style="margin-bottom: 20px">
+  <div class="card-body">
+    <form hx-post="{% url 'geotree:value_create' pk=element.id %}"
+      hx-target="#value-create-{{ random_string }}"
+      hx-swap="outerHTML">
+      {% bootstrap_form form %}
+      <button class="btn btn-primary" type="submit">
+        {% trans "Save" %}
+        <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+      </button>
+    </form>
+  </div>
+</div>
