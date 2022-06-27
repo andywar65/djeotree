@@ -9,7 +9,10 @@
       hx-swap="outerHTML"
       hx-encoding="multipart/form-data">
       {% bootstrap_form form %}
-      <button class="btn btn-primary" type="submit">{% trans "save" %}</button>
+      <button class="btn btn-primary" type="submit">
+        {% trans "Save" %}
+        <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+      </button>
     </form>
   </div>
 </div>
