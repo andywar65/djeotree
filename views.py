@@ -388,5 +388,10 @@ class ImageCreateView(LoginRequiredMixin, CreateView):
             raise PermissionDenied
         return super(ImageCreateView, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["element"] = self.element
+        return context
+
     def get_success_url(self):
         return reverse("geotree:image_detail", kwargs={"pk": self.object.id})

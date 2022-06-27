@@ -64,6 +64,6 @@ urlpatterns = [
         ElementDayArchiveView.as_view(),
         name="day_detail",
     ),
-    path(_("image/add/element/<pk>"), ImageCreateView.as_view(), name="image_create"),
+    path(_("image/add/element/<pk>/"), ImageCreateView.as_view(), name="image_create"),
     path(_("image/<pk>"), ImageDetailView.as_view(), name="image_detail"),
 ]
