@@ -391,6 +391,7 @@ class ImageCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["element"] = self.element
+        context["random_string"] = get_random_string(7)
         return context
 
     def get_success_url(self):
