@@ -6,16 +6,18 @@
     <button class="btn btn-primary"
       hx-get="{% url 'geotree:value_change' pk=value.id %}"
       hx-target="#value-{{ value.id }}"
-      hx-swap="outerHTML">
-      {% trans "Modify" %}
+      hx-swap="outerHTML"
+      title="{% trans 'Modify' %}">
+      <i class="fa fa-pencil"></i>
       <span class="htmx-indicator spinner-border spinner-border-sm"></span>
     </button>
     <button class="btn btn-danger"
       hx-get="{% url 'geotree:value_delete' pk=value.id %}"
       hx-target="#value-{{ value.id }}"
       hx-swap="outerHTML"
-      hx-confirm="{% trans 'Are you sure you want to delete this tag value?' %}">
-      {% trans "Delete" %}
+      hx-confirm="{% trans 'Are you sure you want to delete this tag value?' %}"
+      title="{% trans 'Delete' %}">
+      <i class="fa fa-trash-o"></i>
       <span class="htmx-indicator spinner-border spinner-border-sm"></span>
     </button>
   </div>

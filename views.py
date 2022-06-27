@@ -404,6 +404,25 @@ class ImageCreateView(LoginRequiredMixin, CreateView):
         return reverse("geotree:image_detail", kwargs={"pk": self.object.id})
 
 
+class ImageUpdateView(LoginRequiredMixin, UpdateView):
+    model = ElementImage
+    form_class = ImageCreateForm
+    template_name = "djeotree/htmx/image_change.html"
+
+    def get_initial(self):
+        initial = super(ImageUpdateView, self).get_initial()
+        initial["image"] = self.object.fb_image.path
+        return initial
+
+    def form_valid(self, form):
+        if self.object.element.user != self.request.user:
+            raise PermissionDenied
+        return super(ImageUpdateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("geotree:image_detail", kwargs={"pk": self.object.id})
+
+
 class ImageDeleteView(LoginRequiredMixin, TemplateView):
     template_name = "djeotree/htmx/image_delete.html"
 

@@ -5,12 +5,21 @@
   <img src="{% version image.fb_image 'big' %}" class="card-img-top" alt="{{ image.description }}">
   <div class="card-body">
     <p class="card-text">{{ image.description }}</p>
+    <button class="btn btn-primary"
+      hx-get="{% url 'geotree:image_change' pk=image.id %}"
+      hx-target="#image-{{ image.id }}"
+      hx-swap="outerHTML"
+      title="{% trans 'Modify' %}">
+      <i class="fa fa-pencil"></i>
+      <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+    </button>
     <button class="btn btn-danger"
       hx-get="{% url 'geotree:image_delete' pk=image.id %}"
       hx-target="#image-{{ image.id }}"
       hx-swap="outerHTML"
-      hx-confirm="{% trans 'Are you sure you want to delete this image?' %}">
-      {% trans "Delete" %}
+      hx-confirm="{% trans 'Are you sure you want to delete this image?' %}"
+      title="{% trans 'Delete' %}">
+      <i class="fa fa-trash-o"></i>
       <span class="htmx-indicator spinner-border spinner-border-sm"></span>
     </button>
   </div>
