@@ -38,6 +38,16 @@ class HxPageTemplateMixin:
             return [self.template_name]
 
 
+class HxOnlyTemplateMixin:
+    """Restricts view to HTMX requests"""
+
+    def get_template_names(self):
+        if not self.request.htmx:
+            raise Http404(_("Request without HTMX headers"))
+        else:
+            return [self.template_name]
+
+
 class BaseListView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
@@ -369,13 +379,13 @@ class ElementDeleteView(LoginRequiredMixin, HxPageTemplateMixin, DeleteView):
         )
 
 
-class ImageDetailView(LoginRequiredMixin, DetailView):
+class ImageDetailView(LoginRequiredMixin, HxOnlyTemplateMixin, DetailView):
     model = ElementImage
     context_object_name = "image"
     template_name = "djeotree/htmx/image_detail.html"
 
 
-class ImageCreateView(LoginRequiredMixin, CreateView):
+class ImageCreateView(LoginRequiredMixin, HxOnlyTemplateMixin, CreateView):
     model = ElementImage
     form_class = ImageCreateForm
     template_name = "djeotree/htmx/image_create.html"
@@ -404,7 +414,7 @@ class ImageCreateView(LoginRequiredMixin, CreateView):
         return reverse("geotree:image_detail", kwargs={"pk": self.object.id})
 
 
-class ImageUpdateView(LoginRequiredMixin, UpdateView):
+class ImageUpdateView(LoginRequiredMixin, HxOnlyTemplateMixin, UpdateView):
     model = ElementImage
     form_class = ImageCreateForm
     template_name = "djeotree/htmx/image_change.html"
@@ -423,7 +433,7 @@ class ImageUpdateView(LoginRequiredMixin, UpdateView):
         return reverse("geotree:image_detail", kwargs={"pk": self.object.id})
 
 
-class ImageDeleteView(LoginRequiredMixin, TemplateView):
+class ImageDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
     template_name = "djeotree/htmx/image_delete.html"
 
     def setup(self, request, *args, **kwargs):
@@ -435,13 +445,13 @@ class ImageDeleteView(LoginRequiredMixin, TemplateView):
         self.image.delete()
 
 
-class ValueDetailView(LoginRequiredMixin, DetailView):
+class ValueDetailView(LoginRequiredMixin, HxOnlyTemplateMixin, DetailView):
     model = ElementTagValue
     context_object_name = "value"
     template_name = "djeotree/htmx/value_detail.html"
 
 
-class ValueCreateView(LoginRequiredMixin, CreateView):
+class ValueCreateView(LoginRequiredMixin, HxOnlyTemplateMixin, CreateView):
     model = ElementTagValue
     form_class = ValueCreateForm
     template_name = "djeotree/htmx/value_create.html"
@@ -470,7 +480,7 @@ class ValueCreateView(LoginRequiredMixin, CreateView):
         return reverse("geotree:value_detail", kwargs={"pk": self.object.id})
 
 
-class ValueUpdateView(LoginRequiredMixin, UpdateView):
+class ValueUpdateView(LoginRequiredMixin, HxOnlyTemplateMixin, UpdateView):
     model = ElementTagValue
     form_class = ValueCreateForm
     template_name = "djeotree/htmx/value_change.html"
@@ -484,7 +494,7 @@ class ValueUpdateView(LoginRequiredMixin, UpdateView):
         return reverse("geotree:value_detail", kwargs={"pk": self.object.id})
 
 
-class ValueDeleteView(LoginRequiredMixin, TemplateView):
+class ValueDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
     template_name = "djeotree/htmx/value_delete.html"
 
     def setup(self, request, *args, **kwargs):
