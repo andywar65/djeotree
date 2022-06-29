@@ -26,6 +26,13 @@
           <p>{% trans "No elements yet" %}</p>
         {% endif %}
       </div>
+      {% if user.is_authenticated %}
+        <div class="card-footer">
+          <a class="btn btn-primary" href="{% url 'geotree:element_create' username=user.username %}">
+            {% trans "Add element" %}
+          </a>
+        </div>
+      {% endif %}
     </div>
   </div>
   <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
