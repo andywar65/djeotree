@@ -20,7 +20,9 @@
       {% include "djeotree/includes/element_script.html" %}
       <div class="row">
         <div class="col" style="margin-bottom: 20px">
-          {% include "djeotree/htmx/base_list.html" %}
+          {% block nav-card %}
+            {% include "djeotree/includes/base_list.html" %}
+          {% endblock nav-card %}
         </div>
         <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
           {% leaflet_map "mymap" callback="window.map_init" %}

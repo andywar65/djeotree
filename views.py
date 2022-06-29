@@ -51,7 +51,7 @@ class HxOnlyTemplateMixin:
 class BaseListView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/htmx/base_list.html"
+    template_name = "djeotree/base_list.html"
 
     def get_queryset(self):
         qs = Element.objects.filter(private=False)
