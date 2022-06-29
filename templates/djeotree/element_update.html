@@ -9,7 +9,7 @@
   {% leaflet_css plugins="forms" %}
   <style>
     .leaflet-container {  /* all maps */
-      height: 600px;
+      height: 400px;
       margin-bottom: 20px;
     }
   </style>
@@ -30,6 +30,9 @@
             {% csrf_token %}
             {% bootstrap_form form %}
             <input class="btn btn-primary" type="submit" value="{% trans 'Modify' %}" />
+            <a class="btn btn-secondary" href="{% url 'geotree:element_detail' username=element.user.username pk=element.id %}">
+              {% trans "Preview" %}
+            </a>
             <a class="btn btn-danger"
               hx-get="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}"
               hx-target="#content"
@@ -59,7 +62,7 @@
           </a>
         </div>
       </div>
-      <div class="card mx-auto mt-20" style="max-width: 480px; margin-top: 20px">
+      <div class="card mx-auto" style="max-width: 480px; margin-top: 20px">
         <div class="card-header">
           <h4>{% trans "Tags"%}:</h4>
         </div>

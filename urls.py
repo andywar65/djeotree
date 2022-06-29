@@ -29,29 +29,29 @@ from .views import (
 app_name = "geotree"
 urlpatterns = [
     path("", BaseListView.as_view(), name="base_list"),
-    path(_("families"), FamilyListView.as_view(), name="family_list"),
-    path(_("authors"), AuthorListView.as_view(), name="author_list"),
-    path(_("tags"), TagListView.as_view(), name="tag_list"),
-    path(_("family/<pk>"), FamilyDetailView.as_view(), name="family_detail"),
-    path(_("author/<username>"), AuthorDetailView.as_view(), name="author_detail"),
-    path(_("tag/<pk>"), TagDetailView.as_view(), name="tag_detail"),
+    path(_("families/"), FamilyListView.as_view(), name="family_list"),
+    path(_("authors/"), AuthorListView.as_view(), name="author_list"),
+    path(_("tags/"), TagListView.as_view(), name="tag_list"),
+    path(_("family/<pk>/"), FamilyDetailView.as_view(), name="family_detail"),
+    path(_("author/<username>/"), AuthorDetailView.as_view(), name="author_detail"),
+    path(_("tag/<pk>/"), TagDetailView.as_view(), name="tag_detail"),
     path(
-        _("author/<username>/element/add"),
+        _("author/<username>/element/add/"),
         ElementCreateView.as_view(),
         name="element_create",
     ),
     path(
-        _("author/<username>/element/<pk>"),
+        _("author/<username>/element/<pk>/"),
         ElementDetailView.as_view(),
         name="element_detail",
     ),
     path(
-        _("author/<username>/element/<pk>/change"),
+        _("author/<username>/element/<pk>/change/"),
         ElementUpdateView.as_view(),
         name="element_update",
     ),
     path(
-        _("author/<username>/element/<pk>/delete"),
+        _("author/<username>/element/<pk>/delete/"),
         ElementDeleteView.as_view(),
         name="element_delete",
     ),
@@ -72,19 +72,19 @@ urlpatterns = [
     ),
     # used for inlines
     path(_("element/<pk>/image/add/"), ImageCreateView.as_view(), name="image_create"),
-    path(_("element/image/<pk>"), ImageDetailView.as_view(), name="image_detail"),
+    path(_("element/image/<pk>/"), ImageDetailView.as_view(), name="image_detail"),
     path(
-        _("element/image/<pk>/change"), ImageUpdateView.as_view(), name="image_change"
+        _("element/image/<pk>/change/"), ImageUpdateView.as_view(), name="image_change"
     ),
     path(
-        _("element/image/<pk>/delete"), ImageDeleteView.as_view(), name="image_delete"
+        _("element/image/<pk>/delete/"), ImageDeleteView.as_view(), name="image_delete"
     ),
     path(_("element/<pk>/value/add/"), ValueCreateView.as_view(), name="value_create"),
-    path(_("element/value/<pk>"), ValueDetailView.as_view(), name="value_detail"),
+    path(_("element/value/<pk>/"), ValueDetailView.as_view(), name="value_detail"),
     path(
-        _("element/value/<pk>/change"), ValueUpdateView.as_view(), name="value_change"
+        _("element/value/<pk>/change/"), ValueUpdateView.as_view(), name="value_change"
     ),
     path(
-        _("element/value/<pk>/delete"), ValueDeleteView.as_view(), name="value_delete"
+        _("element/value/<pk>/delete/"), ValueDeleteView.as_view(), name="value_delete"
     ),
 ]
