@@ -22,7 +22,7 @@ class FamilyAdmin(TreeAdmin):
         (
             None,
             {
-                "fields": ("user", "title", "intro"),
+                "fields": ("title", "intro"),
             },
         ),
         (
