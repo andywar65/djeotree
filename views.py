@@ -134,10 +134,10 @@ class TagListView(HxPageTemplateMixin, ListView):
         return context
 
 
-class AuthorDetailView(HxPageTemplateMixin, ListView):
+class AuthorDetailView(ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/htmx/author_detail.html"
+    template_name = "djeotree/author_detail.html"
 
     def setup(self, request, *args, **kwargs):
         super(AuthorDetailView, self).setup(request, *args, **kwargs)
