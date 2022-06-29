@@ -2,7 +2,7 @@
 
 <div class="card" id="nav-card">
   <div class="card-header">
-    <h4 class="card-title">{% trans "Geotree"%}</h4>
+    <h4 class="card-title">{% trans "Geotree" %}</h4>
   </div>
   <div class="card-body">
     <h5>{% trans "View by"%}: </h5>
@@ -36,4 +36,11 @@
       </li>
     </ul>
   </div>
+  {% if user.is_authenticated %}
+    <div class="card-footer">
+      <a class="btn btn-primary" href="{% url 'geotree:element_create' username=user.username %}">
+        {% trans "Add element" %}
+      </a>
+    </div>
+  {% endif %}
 </div>

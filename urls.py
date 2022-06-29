@@ -70,12 +70,21 @@ urlpatterns = [
         ElementDayArchiveView.as_view(),
         name="day_detail",
     ),
-    path(_("image/add/element/<pk>/"), ImageCreateView.as_view(), name="image_create"),
-    path(_("image/<pk>"), ImageDetailView.as_view(), name="image_detail"),
-    path(_("image/<pk>/change"), ImageUpdateView.as_view(), name="image_change"),
-    path(_("image/<pk>/delete"), ImageDeleteView.as_view(), name="image_delete"),
-    path(_("value/add/element/<pk>/"), ValueCreateView.as_view(), name="value_create"),
-    path(_("value/<pk>"), ValueDetailView.as_view(), name="value_detail"),
-    path(_("value/<pk>/change"), ValueUpdateView.as_view(), name="value_change"),
-    path(_("value/<pk>/delete"), ValueDeleteView.as_view(), name="value_delete"),
+    # used for inlines
+    path(_("element/<pk>/image/add/"), ImageCreateView.as_view(), name="image_create"),
+    path(_("element/image/<pk>"), ImageDetailView.as_view(), name="image_detail"),
+    path(
+        _("element/image/<pk>/change"), ImageUpdateView.as_view(), name="image_change"
+    ),
+    path(
+        _("element/image/<pk>/delete"), ImageDeleteView.as_view(), name="image_delete"
+    ),
+    path(_("element/<pk>/value/add/"), ValueCreateView.as_view(), name="value_create"),
+    path(_("element/value/<pk>"), ValueDetailView.as_view(), name="value_detail"),
+    path(
+        _("element/value/<pk>/change"), ValueUpdateView.as_view(), name="value_change"
+    ),
+    path(
+        _("element/value/<pk>/delete"), ValueDeleteView.as_view(), name="value_delete"
+    ),
 ]
