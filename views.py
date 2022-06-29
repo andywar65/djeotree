@@ -157,10 +157,10 @@ class AuthorDetailView(ListView):
         return context
 
 
-class FamilyDetailView(HxPageTemplateMixin, ListView):
+class FamilyDetailView(ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/htmx/family_detail.html"
+    template_name = "djeotree/family_detail.html"
 
     def setup(self, request, *args, **kwargs):
         super(FamilyDetailView, self).setup(request, *args, **kwargs)
@@ -190,10 +190,10 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
         return context
 
 
-class TagDetailView(HxPageTemplateMixin, ListView):
+class TagDetailView(ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/htmx/tag_detail.html"
+    template_name = "djeotree/tag_detail.html"
 
     def setup(self, request, *args, **kwargs):
         super(TagDetailView, self).setup(request, *args, **kwargs)
@@ -217,10 +217,10 @@ class TagDetailView(HxPageTemplateMixin, ListView):
         return context
 
 
-class ElementDetailView(HxPageTemplateMixin, DetailView):
+class ElementDetailView(DetailView):
     model = Element
     context_object_name = "element"
-    template_name = "djeotree/htmx/element_detail.html"
+    template_name = "djeotree/element_detail.html"
 
     def get_object(self, queryset=None):
         self.object = super(ElementDetailView, self).get_object(queryset=None)
@@ -241,7 +241,7 @@ class ElementDetailView(HxPageTemplateMixin, DetailView):
         return context
 
 
-class ElementDayArchiveView(HxPageTemplateMixin, DayArchiveView):
+class ElementDayArchiveView(DayArchiveView):
     model = Element
     date_field = "date"
     context_object_name = "elements"
@@ -249,7 +249,7 @@ class ElementDayArchiveView(HxPageTemplateMixin, DayArchiveView):
     month_format = "%m"
     day_format = "%d"
     allow_empty = True
-    template_name = "djeotree/htmx/day_detail.html"
+    template_name = "djeotree/day_detail.html"
 
     def get_queryset(self):
         original = super(ElementDayArchiveView, self).get_queryset()
@@ -265,14 +265,14 @@ class ElementDayArchiveView(HxPageTemplateMixin, DayArchiveView):
         return context
 
 
-class ElementMonthArchiveView(HxPageTemplateMixin, MonthArchiveView):
+class ElementMonthArchiveView(MonthArchiveView):
     model = Element
     date_field = "date"
     context_object_name = "elements"
     year_format = "%Y"
     month_format = "%m"
     allow_empty = True
-    template_name = "djeotree/htmx/month_detail.html"
+    template_name = "djeotree/month_detail.html"
 
     def get_queryset(self):
         original = super(ElementMonthArchiveView, self).get_queryset()
@@ -288,14 +288,14 @@ class ElementMonthArchiveView(HxPageTemplateMixin, MonthArchiveView):
         return context
 
 
-class ElementYearArchiveView(HxPageTemplateMixin, YearArchiveView):
+class ElementYearArchiveView(YearArchiveView):
     model = Element
     date_field = "date"
     make_object_list = True
     context_object_name = "elements"
     year_format = "%Y"
     allow_empty = True
-    template_name = "djeotree/htmx/year_detail.html"
+    template_name = "djeotree/year_detail.html"
 
     def get_queryset(self):
         original = super(ElementYearArchiveView, self).get_queryset()
