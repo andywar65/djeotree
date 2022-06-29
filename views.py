@@ -301,10 +301,10 @@ class ElementYearArchiveView(HxPageTemplateMixin, YearArchiveView):
         return context
 
 
-class ElementCreateView(LoginRequiredMixin, HxPageTemplateMixin, CreateView):
+class ElementCreateView(LoginRequiredMixin, CreateView):
     model = Element
     form_class = ElementCreateForm
-    template_name = "djeotree/htmx/element_create.html"
+    template_name = "djeotree/includes/element_create.html"
 
     def get_initial(self):
         initial = super(ElementCreateView, self).get_initial()
@@ -323,10 +323,10 @@ class ElementCreateView(LoginRequiredMixin, HxPageTemplateMixin, CreateView):
         )
 
 
-class ElementUpdateView(LoginRequiredMixin, HxPageTemplateMixin, UpdateView):
+class ElementUpdateView(LoginRequiredMixin, UpdateView):
     model = Element
     form_class = ElementCreateForm
-    template_name = "djeotree/htmx/element_update.html"
+    template_name = "djeotree/includes/element_update.html"
 
     def get_object(self, queryset=None):
         self.object = super(ElementUpdateView, self).get_object(queryset=None)
