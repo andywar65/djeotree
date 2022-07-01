@@ -200,10 +200,10 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
         return context
 
 
-class TagDetailView(ListView):
+class TagDetailView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/tag_detail.html"
+    template_name = "djeotree/htmx/tag_detail.html"
 
     def setup(self, request, *args, **kwargs):
         super(TagDetailView, self).setup(request, *args, **kwargs)
