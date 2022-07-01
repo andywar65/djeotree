@@ -113,6 +113,11 @@ class AuthorListView(HxPageTemplateMixin, ListView):
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        response = super(AuthorListView, self).dispatch(request, *args, **kwargs)
+        response["HX-Trigger"] = '{"showMessage": "This is the Author list"}'
+        return response
+
 
 class TagListView(HxPageTemplateMixin, ListView):
     model = Element

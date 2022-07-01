@@ -42,5 +42,9 @@
     collection = {{ lines|geojsonfeature:"popupContent"|safe }};
     let lines = L.geoJson(collection, {style: setLineStyle, onEachFeature: onEachFeature});
     lines.addTo(map);
+
+    addEventListener("showMessage", function(evt){
+      alert(evt.detail.value);
+    })
   }
 </script>
