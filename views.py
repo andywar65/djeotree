@@ -167,10 +167,10 @@ class AuthorDetailView(HxPageTemplateMixin, ListView):
         return response
 
 
-class FamilyDetailView(ListView):
+class FamilyDetailView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/family_detail.html"
+    template_name = "djeotree/htmx/family_detail.html"
 
     def setup(self, request, *args, **kwargs):
         super(FamilyDetailView, self).setup(request, *args, **kwargs)
@@ -212,19 +212,28 @@ class TagDetailView(ListView):
     def get_queryset(self):
         e_values = self.tag.element_tag_value
         list = e_values.values_list("element_id", flat=True)
-        qs = Element.objects.filter(id__in=list, private=False)
+        self.qs = Element.objects.filter(id__in=list, private=False)
         if self.request.user.is_authenticated:
             qs2 = Element.objects.filter(
                 user_id=self.request.user.uuid, id__in=list, private=True
             )
-            qs = qs | qs2
-        return qs.order_by("family", "id")
+            self.qs = self.qs | qs2
+        return self.qs.order_by("family", "id")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tag"] = self.tag
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(TagDetailView, self).dispatch(request, *args, **kwargs)
+        if request.htmx:
+            mark = GeoJSONSerializer().serialize(self.qs, properties=["popupContent"])
+            response["HX-Trigger"] = (
+                '{"refreshData": {"markers": ' + str(mark) + ',"lines": {}}}'
+            )
+        return response
 
 
 class ElementDetailView(DetailView):

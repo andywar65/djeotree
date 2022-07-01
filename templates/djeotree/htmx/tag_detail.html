@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<div class="card" id="nav-card">
+  <div class="card-header">
+    <h4 class="card-title">
+      {% trans "Tag"%}: {{ tag.title }}
+    </h4>
+  </div>
+  <div class="card-body">
+    {% if elements %}
+      <h5>{% trans "Elements"%}:</h5>
+      <ul>
+        {% for element in elements %}
+          <li>
+            <a href="{% url 'geotree:element_detail' username=element.user.username pk=element.id %}">
+              {{ element }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>{% trans "No elements yet" %}</p>
+    {% endif %}
+  </div>
+  {% if user.is_authenticated %}
+    <div class="card-footer">
+      <a class="btn btn-primary" href="{% url 'geotree:element_create' username=user.username %}">
+        {% trans "Add element" %}
+      </a>
+    </div>
+  {% endif %}
+</div>

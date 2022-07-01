@@ -8,7 +8,15 @@
     {% if tags %}
       <ul>
         {% for tag in tags %}
-          <li><a href="{% url 'geotree:tag_detail' pk=tag.id %}">{{ tag.title }}</a></li>
+          <li>
+            <a class="primary-link"
+              hx-get="{% url 'geotree:tag_detail' pk=tag.id %}"
+              hx-target="#nav-card"
+              hx-swap="outerHTML"
+              hx-push-url="{% url 'geotree:tag_detail' pk=tag.id %}">
+              {{ tag.title }}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     {% else %}
