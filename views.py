@@ -181,13 +181,13 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
         children = self.family.get_descendants()
         for child in children:
             list.append(child.id)
-        qs = Element.objects.filter(family_id__in=list, private=False)
+        self.qs = Element.objects.filter(family_id__in=list, private=False)
         if self.request.user.is_authenticated:
             qs2 = Element.objects.filter(
                 user_id=self.request.user.uuid, family_id__in=list, private=True
             )
-            qs = qs | qs2
-        return qs.order_by("family", "id")
+            self.qs = self.qs | qs2
+        return self.qs.order_by("family", "id")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -196,8 +196,25 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
         context["lines"] = self.family.get_descendants() | Family.objects.filter(
             id=self.family.id
         )
+        self.lines = context["lines"]
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(FamilyDetailView, self).dispatch(request, *args, **kwargs)
+        if request.htmx:
+            mark = GeoJSONSerializer().serialize(self.qs, properties=["popupContent"])
+            lins = GeoJSONSerializer().serialize(
+                self.lines, properties=["popupContent"]
+            )
+            response["HX-Trigger"] = (
+                '{"refreshData": {"markers": '
+                + str(mark)
+                + ',"lines": '
+                + str(lins)
+                + "}}"
+            )
+        return response
 
 
 class TagDetailView(HxPageTemplateMixin, ListView):
