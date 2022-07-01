@@ -160,8 +160,10 @@ class AuthorDetailView(HxPageTemplateMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         response = super(AuthorDetailView, self).dispatch(request, *args, **kwargs)
         if request.htmx:
-            data = GeoJSONSerializer().serialize(self.qs, properties=["popupContent"])
-            response["HX-Trigger"] = '{"refreshData": ' + str(data) + "}"
+            mark = GeoJSONSerializer().serialize(self.qs, properties=["popupContent"])
+            response["HX-Trigger"] = (
+                '{"refreshData": {"markers": ' + str(mark) + ',"lines": {}}}'
+            )
         return response
 
 

@@ -50,7 +50,7 @@
     addEventListener("refreshData", function(evt){
       mk_layer.clearLayers();
       ln_layer.clearLayers();
-      let collection = evt.detail;
+      let collection = evt.detail.markers;
       let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
       markers.addTo(mk_layer);
       map.fitBounds(markers.getBounds(), {padding: [30,30]});
