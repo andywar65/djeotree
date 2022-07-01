@@ -16,6 +16,7 @@ from django.views.generic import (
     UpdateView,
 )
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
+from djgeojson.serializers import Serializer as GeoJSONSerializer
 
 from .forms import (
     ElementCreateForm,
@@ -113,11 +114,6 @@ class AuthorListView(HxPageTemplateMixin, ListView):
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        response = super(AuthorListView, self).dispatch(request, *args, **kwargs)
-        response["HX-Trigger"] = '{"showMessage": "This is the Author list"}'
-        return response
-
 
 class TagListView(HxPageTemplateMixin, ListView):
     model = Element
@@ -139,27 +135,34 @@ class TagListView(HxPageTemplateMixin, ListView):
         return context
 
 
-class AuthorDetailView(ListView):
+class AuthorDetailView(HxPageTemplateMixin, ListView):
     model = Element
     context_object_name = "elements"
-    template_name = "djeotree/author_detail.html"
+    template_name = "djeotree/htmx/author_detail.html"
 
     def setup(self, request, *args, **kwargs):
         super(AuthorDetailView, self).setup(request, *args, **kwargs)
         self.author = get_object_or_404(User, username=self.kwargs["username"])
 
     def get_queryset(self):
-        qs = Element.objects.filter(user_id=self.author.uuid, private=False)
+        self.qs = Element.objects.filter(user_id=self.author.uuid, private=False)
         if self.request.user.is_authenticated:
             qs2 = Element.objects.filter(user_id=self.request.user.uuid, private=True)
-            qs = qs | qs2
-        return qs.order_by("family", "id")
+            self.qs = self.qs | qs2
+        return self.qs.order_by("family", "id")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["author"] = self.author
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(AuthorDetailView, self).dispatch(request, *args, **kwargs)
+        if request.htmx:
+            data = GeoJSONSerializer().serialize(self.qs, properties=["popupContent"])
+            response["HX-Trigger"] = '{"refreshData": ' + str(data) + "}"
+        return response
 
 
 class FamilyDetailView(ListView):

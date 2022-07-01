@@ -8,7 +8,15 @@
     {% if authors %}
       <ul>
         {% for author in authors %}
-          <li><a href="{% url 'geotree:author_detail' username=author %}">{{ author }}</a></li>
+          <li>
+            <a class="primary-link"
+              hx-get="{% url 'geotree:author_detail' username=author %}"
+              hx-target="#nav-card"
+              hx-swap="outerHTML"
+              hx-push-url="{% url 'geotree:author_detail' username=author %}">
+              {{ author }}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     {% else %}

@@ -1,17 +1,18 @@
 {% load geojson_tags %}
 
 <script type="text/javascript">
-  function onEachFeature(feature, layer) {
-    if (feature.properties && feature.properties.popupContent) {
-      layer.bindPopup(feature.properties.popupContent.content, {minWidth: 256});
-    }
-  }
-
-  function setLineStyle(feature) {
-    return {"color": feature.properties.popupContent.color, "weight": 5 };
-  }
-
   function map_init(map, options) {
+
+    function onEachFeature(feature, layer) {
+      if (feature.properties && feature.properties.popupContent) {
+        layer.bindPopup(feature.properties.popupContent.content, {minWidth: 256});
+      }
+    }
+
+    function setLineStyle(feature) {
+      return {"color": feature.properties.popupContent.color, "weight": 5 };
+    }
+
     const base_map = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
         attribution: '',
@@ -35,16 +36,24 @@
 
     L.control.layers(baseMaps).addTo(map);
 
+    let mk_layer = L.layerGroup().addTo(map);
+    let ln_layer = L.layerGroup().addTo(map);
+
     let collection = {{ elements|geojsonfeature:"popupContent"|safe }};
     let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
-    markers.addTo(map);
-    map.fitBounds(markers.getBounds(), {padding: [50,50]});
+    markers.addTo(mk_layer);
+    map.fitBounds(markers.getBounds(), {padding: [30,30]});
     collection = {{ lines|geojsonfeature:"popupContent"|safe }};
     let lines = L.geoJson(collection, {style: setLineStyle, onEachFeature: onEachFeature});
-    lines.addTo(map);
+    lines.addTo(ln_layer);
 
-    addEventListener("showMessage", function(evt){
-      alert(evt.detail.value);
+    addEventListener("refreshData", function(evt){
+      mk_layer.clearLayers();
+      ln_layer.clearLayers();
+      let collection = evt.detail;
+      let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
+      markers.addTo(mk_layer);
+      map.fitBounds(markers.getBounds(), {padding: [30,30]});
     })
   }
 </script>
