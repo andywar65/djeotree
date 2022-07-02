@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -162,9 +164,8 @@ class AuthorDetailView(HxPageTemplateMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         response = super(AuthorDetailView, self).dispatch(request, *args, **kwargs)
         if request.htmx:
-            response["HX-Trigger-After-Swap"] = (
-                '{"getMarkerCollection": "' + self.crypto + '"}'
-            )
+            dict = {"getMarkerCollection": self.crypto}
+            response["HX-Trigger-After-Swap"] = json.dumps(dict)
         return response
 
 
@@ -208,13 +209,11 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         response = super(FamilyDetailView, self).dispatch(request, *args, **kwargs)
         if request.htmx:
-            response["HX-Trigger-After-Swap"] = (
-                '{"getMarkerCollection": "'
-                + self.m_crypto
-                + '", "getLineCollection": "'
-                + self.l_crypto
-                + '"}'
-            )
+            dict = {
+                "getMarkerCollection": self.m_crypto,
+                "getLineCollection": self.l_crypto,
+            }
+            response["HX-Trigger-After-Swap"] = json.dumps(dict)
         return response
 
 
@@ -250,9 +249,8 @@ class TagDetailView(HxPageTemplateMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         response = super(TagDetailView, self).dispatch(request, *args, **kwargs)
         if request.htmx:
-            response["HX-Trigger-After-Swap"] = (
-                '{"getMarkerCollection": "' + self.crypto + '"}'
-            )
+            dict = {"getMarkerCollection": self.crypto}
+            response["HX-Trigger-After-Swap"] = json.dumps(dict)
         return response
 
 
