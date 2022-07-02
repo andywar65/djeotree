@@ -65,6 +65,8 @@ class BaseListView(HxPageTemplateMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["lines"] = Family.objects.all()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
+        self.crypto = get_random_string(7)
+        context["crypto"] = self.crypto
         return context
 
 
