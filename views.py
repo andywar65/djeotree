@@ -257,7 +257,7 @@ class TagDetailView(HxPageTemplateMixin, ListView):
 class ElementDetailView(DetailView):
     model = Element
     context_object_name = "element"
-    template_name = "djeotree/element_detail.html"
+    template_name = "djeotree/element_base.html"
 
     def get_object(self, queryset=None):
         self.object = super(ElementDetailView, self).get_object(queryset=None)
