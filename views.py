@@ -65,9 +65,16 @@ class BaseListView(HxPageTemplateMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["lines"] = Family.objects.all()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
-        self.crypto = get_random_string(7)
-        context["crypto"] = self.crypto
+        # self.crypto = get_random_string(7)
+        # context["crypto"] = self.crypto
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(BaseListView, self).dispatch(request, *args, **kwargs)
+        # response["HX-Trigger"] = (
+        # '{"getMarkerCollection": "' + self.crypto + '"}'
+        # )
+        return response
 
 
 class FamilyListView(HxPageTemplateMixin, ListView):
