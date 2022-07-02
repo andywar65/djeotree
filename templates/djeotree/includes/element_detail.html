@@ -1,46 +1,8 @@
 {% load leaflet_tags %}
 {% load geojson_tags %}
 {% load i18n %}
+{% load static %}
 
-<script type="text/javascript">
-  function onEachFeature(feature, layer) {
-    if (feature.properties && feature.properties.popupContent) {
-      layer.bindPopup(feature.properties.popupContent.content, {minWidth: 256});
-    }
-  }
-  function map_init(map, options) {
-    const base_map = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        attribution: '',
-        maxZoom: 19,
-      }).addTo(map);
-
-    const sat_map = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
-      {
-        attribution: 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 19,
-        tileSize: 512,
-        zoomOffset: -1,
-        id: "mapbox/satellite-v9",
-        accessToken: "{{ mapbox_token }}"
-      });
-
-    const baseMaps = {
-      "Base": base_map,
-      "Satellite": sat_map
-    };
-    L.control.layers(baseMaps).addTo(map);
-    let collection = {{ element|geojsonfeature:"popupContent"|safe }};
-    let marker = L.geoJson(collection, {onEachFeature: onEachFeature});
-    marker.addTo(map);
-    console.log(collection)
-    map.setView(
-      [collection.features[0].geometry.coordinates[1],
-        collection.features[0].geometry.coordinates[0]],
-      19
-    );
-  }
-</script>
 <div class="row">
   <div class="col" style="margin-bottom: 20px">
     <div class="card">
@@ -99,6 +61,9 @@
   </div>
 </div>
 <div class="row">
+  {{ mapbox_token|json_script:"mapbox_token"}}
+  <script id="marker_data" type="application/json">{{ element|geojsonfeature:"popupContent"|safe }}</script>
+  <script src="{% static 'djeotree/js/element_detail.js'%}"></script>
   <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
     {% leaflet_map "mymap" callback="window.map_init" %}
   </div>
