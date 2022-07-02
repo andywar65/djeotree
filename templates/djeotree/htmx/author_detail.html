@@ -28,3 +28,7 @@
     </div>
   {% endif %}
 </div>
+{% if crypto %}
+  {% load geojson_tags %}
+  <script id="{{ crypto }}" type="application/json">{{ elements|geojsonfeature:"popupContent"|safe }}</script>
+{% endif %}

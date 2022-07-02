@@ -58,7 +58,12 @@
     })
 
     addEventListener("getMarkerCollection", function(evt){
-      alert("ok")
+      mk_layer.clearLayers();
+      ln_layer.clearLayers();
+      let collection = JSON.parse(document.getElementById(evt.detail.value).textContent);
+      let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
+      markers.addTo(mk_layer);
+      map.fitBounds(markers.getBounds(), {padding: [30,30]});
     })
   }
 </script>

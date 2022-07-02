@@ -18,7 +18,6 @@
   {% include 'navbar.html' %}
   <main class="flex-shrink-0">
     <div id="content" class="container">
-      {% include "djeotree/includes/element_script.html" %}
       <div class="row">
         <div class="col" style="margin-bottom: 20px">
           {% block nav-card %}
@@ -27,6 +26,7 @@
         </div>
         <script id="marker_data" type="application/json">{{ elements|geojsonfeature:"popupContent"|safe }}</script>
         <script id="line_data" type="application/json">{{ lines|geojsonfeature:"popupContent"|safe }}</script>
+        {% include "djeotree/includes/element_script.html" %}
         <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
           {% leaflet_map "mymap" callback="window.map_init" %}
         </div>
