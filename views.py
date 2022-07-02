@@ -243,14 +243,16 @@ class TagDetailView(HxPageTemplateMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["tag"] = self.tag
         context["mapbox_token"] = settings.MAPBOX_TOKEN
+        if self.request.htmx:
+            self.crypto = get_random_string(7)
+            context["crypto"] = self.crypto
         return context
 
     def dispatch(self, request, *args, **kwargs):
         response = super(TagDetailView, self).dispatch(request, *args, **kwargs)
         if request.htmx:
-            mark = GeoJSONSerializer().serialize(self.qs, properties=["popupContent"])
-            response["HX-Trigger"] = (
-                '{"refreshData": {"markers": ' + str(mark) + ',"lines": {}}}'
+            response["HX-Trigger-After-Swap"] = (
+                '{"getMarkerCollection": "' + self.crypto + '"}'
             )
         return response
 
