@@ -45,18 +45,6 @@
     let lines = L.geoJson(collection, {style: setLineStyle, onEachFeature: onEachFeature});
     lines.addTo(ln_layer);
 
-    addEventListener("refreshData", function(evt){
-      mk_layer.clearLayers();
-      ln_layer.clearLayers();
-      let collection = evt.detail.markers;
-      let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
-      markers.addTo(mk_layer);
-      collection = evt.detail.lines;
-      let lines = L.geoJson(collection, {style: setLineStyle, onEachFeature: onEachFeature});
-      lines.addTo(ln_layer);
-      map.fitBounds(markers.getBounds(), {padding: [30,30]});
-    })
-
     addEventListener("getMarkerCollection", function(evt){
       mk_layer.clearLayers();
       ln_layer.clearLayers();
@@ -64,6 +52,12 @@
       let markers = L.geoJson(collection, {onEachFeature: onEachFeature});
       markers.addTo(mk_layer);
       map.fitBounds(markers.getBounds(), {padding: [30,30]});
+    })
+
+    addEventListener("getLineCollection", function(evt){
+      let collection = JSON.parse(document.getElementById(evt.detail.value).textContent);
+      let lines = L.geoJson(collection, {style: setLineStyle, onEachFeature: onEachFeature});
+      lines.addTo(ln_layer);
     })
   }
 </script>

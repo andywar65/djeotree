@@ -16,7 +16,6 @@ from django.views.generic import (
     UpdateView,
 )
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
-from djgeojson.serializers import Serializer as GeoJSONSerializer
 
 from .forms import (
     ElementCreateForm,
@@ -198,23 +197,23 @@ class FamilyDetailView(HxPageTemplateMixin, ListView):
         context["lines"] = self.family.get_descendants() | Family.objects.filter(
             id=self.family.id
         )
-        self.lines = context["lines"]
+        if self.request.htmx:
+            self.m_crypto = get_random_string(7)
+            context["m_crypto"] = self.m_crypto
+            self.l_crypto = get_random_string(7)
+            context["l_crypto"] = self.l_crypto
         context["mapbox_token"] = settings.MAPBOX_TOKEN
         return context
 
     def dispatch(self, request, *args, **kwargs):
         response = super(FamilyDetailView, self).dispatch(request, *args, **kwargs)
         if request.htmx:
-            mark = GeoJSONSerializer().serialize(self.qs, properties=["popupContent"])
-            lins = GeoJSONSerializer().serialize(
-                self.lines, properties=["popupContent"]
-            )
-            response["HX-Trigger"] = (
-                '{"refreshData": {"markers": '
-                + str(mark)
-                + ',"lines": '
-                + str(lins)
-                + "}}"
+            response["HX-Trigger-After-Swap"] = (
+                '{"getMarkerCollection": "'
+                + self.m_crypto
+                + '", "getLineCollection": "'
+                + self.l_crypto
+                + '"}'
             )
         return response
 
