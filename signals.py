@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
 from .models import Element, ElementTagValue
@@ -26,5 +26,12 @@ def create_element_tags(sender, instance, created, **kwargs):
                 tag_id=fam_value.tag.id, element_id=instance.id, value=fam_value.value
             )
             elm_value.save()
-        # update parent
+        # update parent's geometry field
         parent.save()
+
+
+@receiver(post_delete, sender=Element)
+def update_parent_on_deletion(sender, instance, **kwargs):
+    parent = instance.family
+    # update parent's geometry field
+    parent.save()
