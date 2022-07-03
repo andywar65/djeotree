@@ -4,7 +4,7 @@
   {% else %}
     </li><li>
   {% endif %}
-  <a class="primary-link"
+  <a class="link-primary"
     hx-get="{% url 'geotree:family_detail' pk=item.id %}"
     hx-target="#nav-card"
     hx-swap="outerHTML"

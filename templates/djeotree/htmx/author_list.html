@@ -9,7 +9,7 @@
       <ul>
         {% for author in authors %}
           <li>
-            <a class="primary-link"
+            <a class="link-primary"
               hx-get="{% url 'geotree:author_detail' username=author %}"
               hx-target="#nav-card"
               hx-swap="outerHTML"
@@ -27,7 +27,7 @@
     <h5>{% trans "View by"%}: </h5>
     <ul>
       <li>
-        <a class="primary-link"
+        <a class="link-primary"
           hx-get="{% url 'geotree:family_list' %}"
           hx-target="#nav-card"
           hx-swap="outerHTML"
@@ -36,7 +36,7 @@
         </a>
       </li>
       <li>
-        <a class="primary-link"
+        <a class="link-primary"
           hx-get="{% url 'geotree:tag_list' %}"
           hx-target="#nav-card"
           hx-swap="outerHTML"
