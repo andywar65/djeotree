@@ -20,7 +20,7 @@
         <a class="btn btn-danger"
           hx-get="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}"
           hx-target="#content"
-          hx-push-url="{% url 'geotree:element_delete' username=element.user.username pk=element.id %}">
+          hx-push-url="true">
           {% trans 'Delete' %}
         </a>
       </form>

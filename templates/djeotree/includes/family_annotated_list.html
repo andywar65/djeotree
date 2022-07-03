@@ -8,7 +8,7 @@
     hx-get="{% url 'geotree:family_detail' pk=item.id %}"
     hx-target="#nav-card"
     hx-swap="outerHTML"
-    hx-push-url="{% url 'geotree:family_detail' pk=item.id %}">
+    hx-push-url="true">
     {{ item.title }}
   </a>
   {% for close in info.close %}

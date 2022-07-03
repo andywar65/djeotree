@@ -12,7 +12,7 @@
           hx-get="{% url 'geotree:family_list' %}"
           hx-target="#nav-card"
           hx-swap="outerHTML"
-          hx-push-url="{% url 'geotree:family_list' %}">
+          hx-push-url="true">
           {% trans "Families"%}
         </a>
       </li>
@@ -21,7 +21,7 @@
           hx-get="{% url 'geotree:author_list' %}"
           hx-target="#nav-card"
           hx-swap="outerHTML"
-          hx-push-url="{% url 'geotree:author_list' %}">
+          hx-push-url="true">
           {% trans "Authors"%}
         </a>
       </li>
@@ -30,7 +30,7 @@
           hx-get="{% url 'geotree:tag_list' %}"
           hx-target="#nav-card"
           hx-swap="outerHTML"
-          hx-push-url="{% url 'geotree:tag_list' %}">
+          hx-push-url="true">
           {% trans "Tags"%}
         </a>
       </li>
