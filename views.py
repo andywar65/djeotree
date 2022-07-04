@@ -1,10 +1,11 @@
+import csv
 import json
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.crypto import get_random_string
@@ -541,3 +542,69 @@ class ValueDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
         if self.user != self.request.user:
             raise PermissionDenied
         self.value.delete()
+
+
+def csv_writer(writer, qs):
+    writer.writerow(
+        [
+            _("ID"),
+            _("Family"),
+            _("Images"),
+            _("Description"),
+            _("Latitude"),
+            _("Longitude"),
+            _("Date"),
+            _("Text"),
+            _("Data sheet"),
+        ]
+    )
+    for e in qs:
+        image_list = []
+        images = e.element_image.all()
+        for image in images:
+            image_list.append(image.fb_image.url)
+        images = image_list if image_list else _("No images")
+        row = [
+            e.id,
+            e.family.title,
+            images,
+            e.intro,
+            e.geom["coordinates"][1],
+            e.geom["coordinates"][0],
+            e.date,
+            e.body,
+        ]
+        values = e.element_value.all()
+        for value in values:
+            row.append(value.tag.title)
+            row.append(value.value)
+        writer.writerow(row)
+    return writer
+
+
+def family_element_download(request, pk):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type="text/csv")
+    response[
+        "Content-Disposition"
+    ] = 'attachment; filename="%(family)s-%(id)s-elements.csv"' % {
+        "family": _("Family"),
+        "id": pk,
+    }
+    family = get_object_or_404(Family, id=pk)
+    list = [pk]
+    children = family.get_descendants()
+    for child in children:
+        list.append(child.id)
+    qs = Element.objects.filter(family_id__in=list, private=False)
+    if request.user.is_authenticated:
+        qs2 = Element.objects.filter(
+            user_id=request.user.uuid, family_id__in=list, private=True
+        )
+        qs = qs | qs2
+    qs.order_by("family", "id")
+
+    writer = csv.writer(response)
+    writer = csv_writer(writer, qs)
+
+    return response

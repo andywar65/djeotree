@@ -22,13 +22,16 @@
       <p>{% trans "No elements yet" %}</p>
     {% endif %}
   </div>
-  {% if user.is_authenticated %}
-    <div class="card-footer">
+  <div class="card-footer">
+    <a class="btn btn-success" href="{% url 'geotree:family_download' pk=family.id %}">
+      {% trans "Download elements" %}
+    </a>
+    {% if user.is_authenticated %}
       <a class="btn btn-primary" href="{% url 'geotree:element_create' username=user.username %}">
         {% trans "Add element" %}
       </a>
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
 </div>
 {% if m_crypto %}
   {% load geojson_tags %}

@@ -24,6 +24,7 @@ from .views import (
     ValueDeleteView,
     ValueDetailView,
     ValueUpdateView,
+    family_element_download,
 )
 
 app_name = "geotree"
@@ -33,6 +34,7 @@ urlpatterns = [
     path(_("authors/"), AuthorListView.as_view(), name="author_list"),
     path(_("tags/"), TagListView.as_view(), name="tag_list"),
     path(_("family/<pk>/"), FamilyDetailView.as_view(), name="family_detail"),
+    path(_("family/<pk>/download/"), family_element_download, name="family_download"),
     path(_("author/<username>/"), AuthorDetailView.as_view(), name="author_detail"),
     path(_("tag/<pk>/"), TagDetailView.as_view(), name="tag_detail"),
     path(
