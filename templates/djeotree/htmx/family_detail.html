@@ -26,11 +26,13 @@
     {% endif %}
   </div>
   <div class="card-footer">
-    <a class="btn btn-success" href="{% url 'geotree:family_download' pk=family.id %}">
+    <a class="btn btn-success" style="margin-bottom: 10px;"
+      href="{% url 'geotree:family_download' pk=family.id %}">
       {% trans "Download elements" %}
     </a>
     {% if user.is_authenticated %}
-      <a class="btn btn-primary" href="{% url 'geotree:element_create' username=user.username %}">
+      <a class="btn btn-primary" style="margin-bottom: 10px;"
+        href="{% url 'geotree:element_create' username=user.username %}">
         {% trans "Add element" %}
       </a>
     {% endif %}
