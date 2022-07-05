@@ -15,6 +15,9 @@
             <a href="{% url 'geotree:element_detail' username=element.user.username pk=element.id %}">
               {{ element }}
             </a>
+            <small>
+              {{ element.intro }}
+            </small>
           </li>
         {% endfor %}
       </ul>
