@@ -24,6 +24,13 @@
     {% else %}
       <p>{% trans "No elements yet" %}</p>
     {% endif %}
+    <a class="link-primary"
+      hx-get="{% url 'geotree:family_list' %}"
+      hx-target="#nav-card"
+      hx-swap="outerHTML"
+      hx-push-url="true">
+      {% trans "All families"%}
+    </a>
   </div>
   <div class="card-footer">
     <a class="btn btn-success" style="margin-bottom: 10px;"

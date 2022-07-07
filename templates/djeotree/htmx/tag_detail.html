@@ -24,6 +24,13 @@
     {% else %}
       <p>{% trans "No elements yet" %}</p>
     {% endif %}
+    <a class="link-primary"
+      hx-get="{% url 'geotree:tag_list' %}"
+      hx-target="#nav-card"
+      hx-swap="outerHTML"
+      hx-push-url="true">
+      {% trans "All tags"%}
+    </a>
   </div>
   {% if user.is_authenticated %}
     <div class="card-footer">
