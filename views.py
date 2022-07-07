@@ -93,7 +93,22 @@ class FamilyListView(HxPageTemplateMixin, ListView):
         context["families"] = list
         context["lines"] = families
         context["mapbox_token"] = settings.MAPBOX_TOKEN
+        if self.request.htmx:
+            self.m_crypto = get_random_string(7)
+            context["m_crypto"] = self.m_crypto
+            self.l_crypto = get_random_string(7)
+            context["l_crypto"] = self.l_crypto
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(FamilyListView, self).dispatch(request, *args, **kwargs)
+        if request.htmx:
+            dict = {
+                "getMarkerCollection": self.m_crypto,
+                "getLineCollection": self.l_crypto,
+            }
+            response["HX-Trigger-After-Swap"] = json.dumps(dict)
+        return response
 
 
 class AuthorListView(HxPageTemplateMixin, ListView):
@@ -114,7 +129,17 @@ class AuthorListView(HxPageTemplateMixin, ListView):
         context["authors"] = list(dict.fromkeys(authors))
         context["lines"] = Family.objects.all()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
+        if self.request.htmx:
+            self.crypto = get_random_string(7)
+            context["crypto"] = self.crypto
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(AuthorListView, self).dispatch(request, *args, **kwargs)
+        if request.htmx:
+            dict = {"getMarkerCollection": self.crypto}
+            response["HX-Trigger-After-Swap"] = json.dumps(dict)
+        return response
 
 
 class TagListView(HxPageTemplateMixin, ListView):
@@ -134,7 +159,17 @@ class TagListView(HxPageTemplateMixin, ListView):
         context["tags"] = Tag.objects.all()
         context["lines"] = Family.objects.all()
         context["mapbox_token"] = settings.MAPBOX_TOKEN
+        if self.request.htmx:
+            self.crypto = get_random_string(7)
+            context["crypto"] = self.crypto
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(TagListView, self).dispatch(request, *args, **kwargs)
+        if request.htmx:
+            dict = {"getMarkerCollection": self.crypto}
+            response["HX-Trigger-After-Swap"] = json.dumps(dict)
+        return response
 
 
 class AuthorDetailView(HxPageTemplateMixin, ListView):
