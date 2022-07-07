@@ -22,4 +22,36 @@
       <p>{% trans "No elements yet" %}</p>
     {% endif %}
   </div>
+  <div class="card-footer">
+    <h5>{% trans "View by"%}: </h5>
+    <ul>
+      <li>
+        <a class="link-primary"
+          hx-get="{% url 'geotree:family_list' %}"
+          hx-target="#nav-card"
+          hx-swap="outerHTML"
+          hx-push-url="true">
+          {% trans "Families"%}
+        </a>
+      </li>
+      <li>
+        <a class="link-primary"
+          hx-get="{% url 'geotree:author_list' %}"
+          hx-target="#nav-card"
+          hx-swap="outerHTML"
+          hx-push-url="true">
+          {% trans "Authors"%}
+        </a>
+      </li>
+      <li>
+        <a class="link-primary"
+          hx-get="{% url 'geotree:tag_list' %}"
+          hx-target="#nav-card"
+          hx-swap="outerHTML"
+          hx-push-url="true">
+          {% trans "Tags"%}
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
