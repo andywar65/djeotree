@@ -4,6 +4,7 @@
 {% block extra-head %}
   {% leaflet_js plugins="forms" %}
   {% leaflet_css plugins="forms" %}
+  {{ form.media }}
   <style>
     .leaflet-container {  /* all maps */
       height: 400px;

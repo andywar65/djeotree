@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.forms import ModelChoiceField, ModelForm
 from django.utils.translation import gettext_lazy as _
 from leaflet.forms.widgets import LeafletWidget
+from tinymce.widgets import TinyMCE
 
 from .models import Element, ElementImage, ElementTagValue
 
@@ -16,8 +17,8 @@ class ElementCreateForm(ModelForm):
 
     class Meta:
         model = Element
-        fields = ["user", "family", "intro", "geom", "private"]
-        widgets = {"geom": LeafletWidget()}
+        fields = ["user", "family", "intro", "geom", "private", "body"]
+        widgets = {"geom": LeafletWidget(), "body": TinyMCE()}
 
 
 class ElementDeleteForm(forms.Form):

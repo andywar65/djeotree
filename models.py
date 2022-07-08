@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from djgeojson.fields import MultiLineStringField, PointField
 from filebrowser.base import FileObject
 from filebrowser.fields import FileBrowseField
+from tinymce.models import HTMLField
 from treebeard.mp_tree import MP_Node
 
 from .utils import cad2hex, check_wide_image
@@ -117,7 +118,7 @@ class Element(models.Model):
         verbose_name=_("Family"),
     )
     intro = models.CharField(_("Description"), null=True, max_length=200)
-    body = models.TextField(_("Text"), null=True, blank=True)
+    body = HTMLField(_("Text"), null=True, blank=True)
     date = models.DateTimeField(
         _("Date"),
         default=now,
