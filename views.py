@@ -508,7 +508,7 @@ class ImageUpdateView(LoginRequiredMixin, HxOnlyTemplateMixin, UpdateView):
 
 
 class ImageDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
-    template_name = "djeotree/htmx/image_delete.html"
+    template_name = "djeotree/htmx/item_delete.html"
 
     def setup(self, request, *args, **kwargs):
         super(ImageDeleteView, self).setup(request, *args, **kwargs)
@@ -516,6 +516,7 @@ class ImageDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
         self.user = self.image.element.user
         if self.user != self.request.user:
             raise PermissionDenied
+        messages.error(request, _('Image "%s" deleted') % self.image.id)
         self.image.delete()
 
 
@@ -569,7 +570,7 @@ class ValueUpdateView(LoginRequiredMixin, HxOnlyTemplateMixin, UpdateView):
 
 
 class ValueDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
-    template_name = "djeotree/htmx/value_delete.html"
+    template_name = "djeotree/htmx/item_delete.html"
 
     def setup(self, request, *args, **kwargs):
         super(ValueDeleteView, self).setup(request, *args, **kwargs)
@@ -577,7 +578,7 @@ class ValueDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
         self.user = self.value.element.user
         if self.user != self.request.user:
             raise PermissionDenied
-        messages.error(request, _("Tag %s deleted") % self.value.tag.title)
+        messages.error(request, _('Tag "%s" deleted') % self.value.tag.title)
         self.value.delete()
 
 
