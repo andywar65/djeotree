@@ -2,6 +2,7 @@ import csv
 import json
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -576,6 +577,7 @@ class ValueDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
         self.user = self.value.element.user
         if self.user != self.request.user:
             raise PermissionDenied
+        messages.error(request, _("Tag %s deleted") % self.value.tag.title)
         self.value.delete()
 
 
