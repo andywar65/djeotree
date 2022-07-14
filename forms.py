@@ -10,7 +10,7 @@ from .models import Element, ElementImage, ElementTagValue
 User = get_user_model()
 
 
-class ElementCreateForm(ModelForm):
+class ElementUpdateForm(ModelForm):
     user = ModelChoiceField(
         label=_("Author"), queryset=User.objects.all(), disabled=True
     )
@@ -19,6 +19,11 @@ class ElementCreateForm(ModelForm):
         model = Element
         fields = ["user", "family", "intro", "geom", "private", "body"]
         widgets = {"geom": LeafletWidget(), "body": TinyMCE()}
+
+
+class ElementCreateForm(ElementUpdateForm):
+    class Media:
+        js = ("djeotree/js/locate_user.js",)
 
 
 class ElementDeleteForm(forms.Form):

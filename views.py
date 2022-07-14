@@ -24,6 +24,7 @@ from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArc
 from .forms import (
     ElementCreateForm,
     ElementDeleteForm,
+    ElementUpdateForm,
     ImageCreateForm,
     ValueCreateForm,
 )
@@ -409,7 +410,7 @@ class ElementCreateView(LoginRequiredMixin, CreateView):
 
 class ElementUpdateView(LoginRequiredMixin, UpdateView):
     model = Element
-    form_class = ElementCreateForm
+    form_class = ElementUpdateForm
     template_name = "djeotree/includes/element_update.html"
 
     def get_object(self, queryset=None):
