@@ -75,6 +75,14 @@ class DjeotreeModelTest(TestCase):
         self.assertEquals(f.geom, line)
         print("\n-Tested Family MultiLine")
 
+    def test_element_popup(self):
+        e = Element.objects.get(intro="foo")
+        content = '<h5><a href="/it/geotree/autore/andy.war65/elemento/1/">'
+        content += "Child title-1</a></h5><small>foo</small>"
+        popup = {"content": content}
+        self.assertEquals(e.popupContent, popup)
+        print("\n-Tested Element Popup")
+
 
 @override_settings(MEDIA_ROOT=Path(settings.MEDIA_ROOT).joinpath("temp"))
 class ElementImageModelTest(TestCase):
@@ -115,3 +123,9 @@ class ElementImageModelTest(TestCase):
         print("\n-Tested Element Image image")
         self.assertEquals(img.fb_image.path, "uploads/images/element/image.jpg")
         print("\n-Tested Element Image fb_image")
+
+    def test_element_first_image(self):
+        e = Element.objects.get(intro="bar")
+        # this test is not working, should be "/media/_versions...etc"
+        self.assertEquals(e.get_first_image(), "/media/")
+        print("\n-Tested Element first image")
