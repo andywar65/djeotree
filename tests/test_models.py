@@ -52,17 +52,28 @@ class DjeotreeModelTest(TestCase):
         self.assertEquals(e.__str__(), "Child title-" + str(e.id))
         print("\n-Tested Element __str__")
 
-    def test_element_user(self):
-        u = User.objects.get(username="andy.war65")
-        e = Element.objects.get(intro="foo")
-        self.assertEquals(e.user, u)
-        print("\n-Tested Element user")
-
     def test_element_tags(self):
         e = Element.objects.get(intro="foo")
         values = e.element_value.all()
         self.assertEquals(values.count(), 1)
         print("\n-Tested Element tag creation")
+
+    def test_family_popup(self):
+        f = Family.objects.get(title="Family title")
+        content = '<h5><a href="/it/geotree/famiglia/1/">Family title</a>'
+        content += "</h5><small>None</small>"
+        popup = {
+            "content": content,
+            "color": "#ff0000",
+        }
+        self.assertEquals(f.popupContent, popup)
+        print("\n-Tested Family Popup")
+
+    def test_family_multiLine(self):
+        f = Family.objects.get(title="Child title")
+        line = {"coordinates": [[[12.493652, 41.866288]]], "type": "MultiLineString"}
+        self.assertEquals(f.geom, line)
+        print("\n-Tested Family MultiLine")
 
 
 @override_settings(MEDIA_ROOT=Path(settings.MEDIA_ROOT).joinpath("temp"))
