@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -75,6 +77,9 @@ class Family(MP_Node):
         coords = []
         elements = self.family_element.filter(private=False).order_by("date")
         for e in elements:
+            # next conditional is for test to run
+            if isinstance(e.geom, str):
+                e.geom = json.loads(e.geom)
             coords.append(e.geom["coordinates"])
         self.geom = {"type": "MultiLineString", "coordinates": [coords]}
         super(Family, self).save(*args, **kwargs)

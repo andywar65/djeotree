@@ -22,23 +22,21 @@ class DjeotreeModelTest(TestCase):
             email="andy@war.com",
         )
         f = Family.objects.create(
-            user_id=u.uuid,
             title="Family title",
             path="0001",
             depth=1,
             numchild=1,
         )
         c = Family.objects.create(
-            user_id=u.uuid,
             title="Child title",
             path="00010001",
             depth=2,
             numchild=0,
         )
-        t = Tag.objects.create(user_id=u.uuid, title="Tag title")
+        t = Tag.objects.create(title="Tag title")
         TagValue.objects.create(family_id=f.id, tag_id=t.id, value="Tag value")
         point = '{"type": "Point","coordinates": [12.493652,41.866288]}'
-        Element.objects.create(family_id=c.id, intro="foo", location=point)
+        Element.objects.create(user_id=u.uuid, family_id=c.id, intro="foo", geom=point)
 
     def test_model__str__(self):
         f = Family.objects.get(title="Family title")
@@ -57,7 +55,7 @@ class DjeotreeModelTest(TestCase):
     def test_element_user(self):
         u = User.objects.get(username="andy.war65")
         e = Element.objects.get(intro="foo")
-        self.assertEquals(e.get_user(), u)
+        self.assertEquals(e.user, u)
         print("\n-Tested Element user")
 
     def test_element_tags(self):
@@ -77,14 +75,15 @@ class ElementImageModelTest(TestCase):
             username="raw.ydna56", password="P4s5W0r6", email="ydna@raw.com"
         )
         f = Family.objects.create(
-            user_id=u.uuid,
             title="Family title",
             path="0002",
             depth=1,
             numchild=0,
         )
         point = '{"type": "Point","coordinates": [12.493652,41.866288]}'
-        e = Element.objects.create(family_id=f.id, intro="bar", location=point)
+        e = Element.objects.create(
+            user_id=u.uuid, family_id=f.id, intro="bar", geom=point
+        )
         img = ElementImage(element_id=e.id, description="taz")
         img_path = Path(settings.STATIC_ROOT).joinpath("tests/image.jpg")
         with open(img_path, "rb") as file:
