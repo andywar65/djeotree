@@ -12,6 +12,12 @@
         {% trans "Save" %}
         <span class="htmx-indicator spinner-border spinner-border-sm"></span>
       </button>
+      <button class="btn btn-secondary"
+        hx-get="{% url 'geotree:image_loop' pk=element.id %}"
+        hx-target="#image-loop">
+        {% trans "Cancel" %}
+        <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+      </button>
     </form>
   </div>
 </div>
