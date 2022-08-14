@@ -16,6 +16,7 @@ from django.views.generic import (
     DeleteView,
     DetailView,
     ListView,
+    RedirectView,
     TemplateView,
     UpdateView,
 )
@@ -495,7 +496,6 @@ class ImageCreateView(LoginRequiredMixin, HxOnlyTemplateMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["element"] = self.element
-        context["random_string"] = get_random_string(7)
         return context
 
     def get_success_url(self):
@@ -521,17 +521,18 @@ class ImageUpdateView(LoginRequiredMixin, HxOnlyTemplateMixin, UpdateView):
         return reverse("geotree:image_detail", kwargs={"pk": self.object.id})
 
 
-class ImageDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
-    template_name = "djeotree/htmx/item_delete.html"
-
+class ImageDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, RedirectView):
     def setup(self, request, *args, **kwargs):
         super(ImageDeleteView, self).setup(request, *args, **kwargs)
         self.image = get_object_or_404(ElementImage, id=self.kwargs["pk"])
-        self.user = self.image.element.user
-        if self.user != self.request.user:
+        self.element = self.image.element
+        if self.element.user != self.request.user:
             raise PermissionDenied
         messages.error(request, _('Image "%s" deleted') % self.image.id)
         self.image.delete()
+
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse("geotree:image_loop", kwargs={"pk": self.element.id})
 
 
 class ValueDetailView(LoginRequiredMixin, HxOnlyTemplateMixin, DetailView):

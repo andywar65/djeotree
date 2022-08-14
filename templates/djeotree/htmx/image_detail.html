@@ -15,8 +15,7 @@
     </button>
     <button class="btn btn-danger"
       hx-get="{% url 'geotree:image_delete' pk=image.id %}"
-      hx-target="#image-{{ image.id }}"
-      hx-swap="outerHTML"
+      hx-target="#image-loop"
       hx-confirm="{% trans 'Are you sure you want to delete this image?' %}"
       title="{% trans 'Delete' %}">
       <i class="fa fa-trash-o"></i>
@@ -26,7 +25,6 @@
       <button class="btn btn-secondary"
         hx-post="#"
         hx-target="#image-loop"
-        hx-swap="outerHTML"
         title="{% trans 'Move up' %}">
         <i class="fa fa-arrow-up"></i>
         <span class="htmx-indicator spinner-border spinner-border-sm"></span>
@@ -36,7 +34,6 @@
       <button class="btn btn-secondary"
         hx-post="#"
         hx-target="#image-loop"
-        hx-swap="outerHTML"
         title="{% trans 'Move down' %}">
         <i class="fa fa-arrow-down"></i>
         <span class="htmx-indicator spinner-border spinner-border-sm"></span>
