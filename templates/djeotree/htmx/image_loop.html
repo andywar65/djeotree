@@ -1,11 +1,13 @@
 {% load i18n %}
 
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-  {% for message in messages %}
-    {{ message }}
-  {% endfor %}
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+{% if messages %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
 {% for image in element.element_image.all %}
   {% include "djeotree/htmx/image_detail.html" %}
 {% empty %}

@@ -518,7 +518,7 @@ class ImageUpdateView(LoginRequiredMixin, HxOnlyTemplateMixin, UpdateView):
         return super(ImageUpdateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse("geotree:image_detail", kwargs={"pk": self.object.id})
+        return reverse("geotree:image_loop", kwargs={"pk": self.object.element.id})
 
 
 class ImageDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, RedirectView):
