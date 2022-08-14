@@ -32,7 +32,7 @@
     {% endif %}
     {% if not forloop.last %}
       <button class="btn btn-secondary"
-        hx-post="#"
+        hx-get="{% url 'geotree:image_down' pk=image.id %}"
         hx-target="#image-loop"
         title="{% trans 'Move down' %}">
         <i class="fa fa-arrow-down"></i>
