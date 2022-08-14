@@ -1,0 +1,13 @@
+{% load i18n %}
+
+{% for image in element.element_image.all %}
+  {% include "djeotree/htmx/image_detail.html" %}
+{% empty %}
+  <p>{% trans "No images yet" %}</p>
+{% endfor %}
+<a class="btn btn-primary"
+  hx-get="{% url 'geotree:image_create' pk=element.id %}"
+  hx-swap="outerHTML">
+  {% trans 'Add image' %}
+  <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+</a>

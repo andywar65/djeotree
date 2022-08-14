@@ -22,5 +22,25 @@
       <i class="fa fa-trash-o"></i>
       <span class="htmx-indicator spinner-border spinner-border-sm"></span>
     </button>
+    {% if not forloop.first %}
+      <button class="btn btn-secondary"
+        hx-post="#"
+        hx-target="#image-loop"
+        hx-swap="outerHTML"
+        title="{% trans 'Move up' %}">
+        <i class="fa fa-arrow-up"></i>
+        <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+      </button>
+    {% endif %}
+    {% if not forloop.last %}
+      <button class="btn btn-secondary"
+        hx-post="#"
+        hx-target="#image-loop"
+        hx-swap="outerHTML"
+        title="{% trans 'Move down' %}">
+        <i class="fa fa-arrow-down"></i>
+        <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+      </button>
+    {% endif %}
   </div>
 </div>

@@ -2,11 +2,10 @@
 {% load i18n %}
 {% load bootstrap5 %}
 
-<div id="image-create-{{ random_string }}" class="card mx-auto" style="margin-bottom: 20px">
+<div class="card mx-auto" style="margin-bottom: 20px">
   <div class="card-body">
     <form hx-post="{% url 'geotree:image_create' pk=element.id %}"
-      hx-target="#image-create-{{ random_string }}"
-      hx-swap="outerHTML"
+      hx-target="#image-loop"
       hx-encoding="multipart/form-data">
       {% bootstrap_form form %}
       <button class="btn btn-primary" type="submit">

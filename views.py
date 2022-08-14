@@ -454,6 +454,19 @@ class ElementDeleteView(LoginRequiredMixin, HxPageTemplateMixin, DeleteView):
         )
 
 
+class ImageLoopView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
+    template_name = "djeotree/htmx/image_loop.html"
+
+    def setup(self, request, *args, **kwargs):
+        super(ImageLoopView, self).setup(request, *args, **kwargs)
+        self.element = get_object_or_404(Element, id=self.kwargs["pk"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["element"] = self.element
+        return context
+
+
 class ImageDetailView(LoginRequiredMixin, HxOnlyTemplateMixin, DetailView):
     model = ElementImage
     context_object_name = "image"
@@ -486,7 +499,7 @@ class ImageCreateView(LoginRequiredMixin, HxOnlyTemplateMixin, CreateView):
         return context
 
     def get_success_url(self):
-        return reverse("geotree:image_detail", kwargs={"pk": self.object.id})
+        return reverse("geotree:image_loop", kwargs={"pk": self.element.id})
 
 
 class ImageUpdateView(LoginRequiredMixin, HxOnlyTemplateMixin, UpdateView):

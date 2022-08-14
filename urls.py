@@ -17,6 +17,7 @@ from .views import (
     ImageCreateView,
     ImageDeleteView,
     ImageDetailView,
+    ImageLoopView,
     ImageUpdateView,
     TagDetailView,
     TagListView,
@@ -73,6 +74,7 @@ urlpatterns = [
         name="day_detail",
     ),
     # used for inlines
+    path(_("element/<pk>/images/"), ImageLoopView.as_view(), name="image_loop"),
     path(_("element/<pk>/image/add/"), ImageCreateView.as_view(), name="image_create"),
     path(_("element/image/<pk>/"), ImageDetailView.as_view(), name="image_detail"),
     path(

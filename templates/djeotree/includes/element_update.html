@@ -30,20 +30,8 @@
     <div class="card-header">
       <h4>{% trans "Images"%}:</h4>
     </div>
-    <div class="card-body">
-      {% if element.element_image.all %}
-        {% for image in element.element_image.all %}
-          {% include "djeotree/htmx/image_detail.html" %}
-        {% endfor %}
-      {% else %}
-        <p>{% trans "No images yet" %}</p>
-      {% endif %}
-      <a class="btn btn-primary"
-        hx-get="{% url 'geotree:image_create' pk=element.id %}"
-        hx-swap="beforebegin">
-        {% trans 'Add image' %}
-        <span class="htmx-indicator spinner-border spinner-border-sm"></span>
-      </a>
+    <div id="image-loop" class="card-body">
+      {% include "djeotree/htmx/image_loop.html" %}
     </div>
   </div>
   <div class="card mx-auto" style="max-width: 480px; margin-top: 20px">
