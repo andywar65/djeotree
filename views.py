@@ -468,12 +468,6 @@ class ImageLoopView(LoginRequiredMixin, HxOnlyTemplateMixin, TemplateView):
         return context
 
 
-class ImageDetailView(LoginRequiredMixin, HxOnlyTemplateMixin, DetailView):
-    model = ElementImage
-    context_object_name = "image"
-    template_name = "djeotree/htmx/image_detail.html"
-
-
 class ImageCreateView(LoginRequiredMixin, HxOnlyTemplateMixin, CreateView):
     model = ElementImage
     form_class = ImageCreateForm

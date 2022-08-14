@@ -16,7 +16,6 @@ from .views import (
     FamilyListView,
     ImageCreateView,
     ImageDeleteView,
-    ImageDetailView,
     ImageLoopView,
     ImageMoveDownView,
     ImageMoveUpView,
@@ -78,7 +77,6 @@ urlpatterns = [
     # used for inlines
     path(_("element/<pk>/images/"), ImageLoopView.as_view(), name="image_loop"),
     path(_("element/<pk>/image/add/"), ImageCreateView.as_view(), name="image_create"),
-    path(_("element/image/<pk>/"), ImageDetailView.as_view(), name="image_detail"),
     path(
         _("element/image/<pk>/change/"), ImageUpdateView.as_view(), name="image_change"
     ),
