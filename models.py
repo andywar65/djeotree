@@ -219,9 +219,7 @@ class ElementImage(models.Model):
     class Meta:
         verbose_name = _("Element image")
         verbose_name_plural = _("Element images")
-        ordering = [
-            "position",
-        ]
+        ordering = ["position"]
 
     def save(self, *args, **kwargs):
         # save and upload image

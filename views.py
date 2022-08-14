@@ -535,6 +535,27 @@ class ImageDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, RedirectView):
         return reverse("geotree:image_loop", kwargs={"pk": self.element.id})
 
 
+class ImageMoveUpView(LoginRequiredMixin, HxOnlyTemplateMixin, RedirectView):
+    def setup(self, request, *args, **kwargs):
+        super(ImageMoveUpView, self).setup(request, *args, **kwargs)
+        image = get_object_or_404(ElementImage, id=self.kwargs["pk"])
+        previous = get_object_or_404(
+            ElementImage, element_id=image.element.id, position=image.position - 1
+        )
+        self.element = image.element
+        if self.element.user != self.request.user:
+            raise PermissionDenied
+        if image.position == 0:
+            raise Http404(_("Image can't be moved upwards"))
+        image.position -= 1
+        image.save()
+        previous.position += 1
+        previous.save()
+
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse("geotree:image_loop", kwargs={"pk": self.element.id})
+
+
 class ValueDetailView(LoginRequiredMixin, HxOnlyTemplateMixin, DetailView):
     model = ElementTagValue
     context_object_name = "value"

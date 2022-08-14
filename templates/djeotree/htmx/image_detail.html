@@ -23,7 +23,7 @@
     </button>
     {% if not forloop.first %}
       <button class="btn btn-secondary"
-        hx-post="#"
+        hx-get="{% url 'geotree:image_up' pk=image.id %}"
         hx-target="#image-loop"
         title="{% trans 'Move up' %}">
         <i class="fa fa-arrow-up"></i>

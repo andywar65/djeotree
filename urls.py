@@ -18,6 +18,7 @@ from .views import (
     ImageDeleteView,
     ImageDetailView,
     ImageLoopView,
+    ImageMoveUpView,
     ImageUpdateView,
     TagDetailView,
     TagListView,
@@ -83,6 +84,7 @@ urlpatterns = [
     path(
         _("element/image/<pk>/delete/"), ImageDeleteView.as_view(), name="image_delete"
     ),
+    path(_("element/image/<pk>/up/"), ImageMoveUpView.as_view(), name="image_up"),
     path(_("element/<pk>/value/add/"), ValueCreateView.as_view(), name="value_create"),
     path(_("element/value/<pk>/"), ValueDetailView.as_view(), name="value_detail"),
     path(
