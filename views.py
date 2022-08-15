@@ -477,14 +477,10 @@ class ImageCreateView(LoginRequiredMixin, HxOnlyTemplateMixin, CreateView):
         super(ImageCreateView, self).setup(request, *args, **kwargs)
         self.element = get_object_or_404(Element, id=self.kwargs["pk"])
 
-    def get_initial(self):
-        initial = super(ImageCreateView, self).get_initial()
-        initial["element"] = self.element
-        return initial
-
     def form_valid(self, form):
         if self.element.user != self.request.user:
             raise PermissionDenied
+        form.instance.element = self.element
         last = self.element.element_image.last()
         if last:
             form.instance.position = last.position + 1

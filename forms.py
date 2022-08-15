@@ -31,13 +31,9 @@ class ElementDeleteForm(forms.Form):
 
 
 class ImageCreateForm(ModelForm):
-    element = ModelChoiceField(
-        label=_("Element"), queryset=Element.objects.all(), disabled=True
-    )
-
     class Meta:
         model = ElementImage
-        fields = ["element", "image", "description"]
+        fields = ["image", "description"]
 
 
 class ValueCreateForm(ModelForm):
