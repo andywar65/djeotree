@@ -581,14 +581,10 @@ class ValueCreateView(LoginRequiredMixin, HxOnlyTemplateMixin, CreateView):
         super(ValueCreateView, self).setup(request, *args, **kwargs)
         self.element = get_object_or_404(Element, id=self.kwargs["pk"])
 
-    def get_initial(self):
-        initial = super(ValueCreateView, self).get_initial()
-        initial["element"] = self.element
-        return initial
-
     def form_valid(self, form):
         if self.element.user != self.request.user:
             raise PermissionDenied
+        form.instance.element = self.element
         return super(ValueCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):

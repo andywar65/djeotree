@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.forms import ModelChoiceField, ModelForm
+from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from leaflet.forms.widgets import LeafletWidget
 from tinymce.widgets import TinyMCE
@@ -33,10 +33,6 @@ class ImageCreateForm(ModelForm):
 
 
 class ValueCreateForm(ModelForm):
-    element = ModelChoiceField(
-        label=_("Element"), queryset=Element.objects.all(), disabled=True
-    )
-
     class Meta:
         model = ElementTagValue
-        fields = ["element", "tag", "value"]
+        fields = ["tag", "value"]
