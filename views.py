@@ -485,6 +485,11 @@ class ImageCreateView(LoginRequiredMixin, HxOnlyTemplateMixin, CreateView):
     def form_valid(self, form):
         if self.element.user != self.request.user:
             raise PermissionDenied
+        last = self.element.element_image.last()
+        if last:
+            form.instance.position = last.position + 1
+        else:
+            form.instance.position = 0
         return super(ImageCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
