@@ -392,14 +392,8 @@ class ElementCreateView(LoginRequiredMixin, CreateView):
     form_class = ElementCreateForm
     template_name = "djeotree/includes/element_create.html"
 
-    def get_initial(self):
-        initial = super(ElementCreateView, self).get_initial()
-        initial["user"] = self.request.user
-        return initial
-
     def form_valid(self, form):
-        if form.instance.user != self.request.user:
-            raise PermissionDenied
+        form.instance.user = self.request.user
         return super(ElementCreateView, self).form_valid(form)
 
     def get_success_url(self):

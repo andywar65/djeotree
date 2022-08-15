@@ -11,13 +11,9 @@ User = get_user_model()
 
 
 class ElementUpdateForm(ModelForm):
-    user = ModelChoiceField(
-        label=_("Author"), queryset=User.objects.all(), disabled=True
-    )
-
     class Meta:
         model = Element
-        fields = ["user", "family", "intro", "geom", "private", "body"]
+        fields = ["family", "intro", "geom", "private", "body"]
         widgets = {"geom": LeafletWidget(), "body": TinyMCE()}
 
 
