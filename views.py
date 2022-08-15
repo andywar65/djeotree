@@ -523,12 +523,16 @@ class ImageUpdateView(LoginRequiredMixin, HxOnlyTemplateMixin, UpdateView):
 class ImageDeleteView(LoginRequiredMixin, HxOnlyTemplateMixin, RedirectView):
     def setup(self, request, *args, **kwargs):
         super(ImageDeleteView, self).setup(request, *args, **kwargs)
-        self.image = get_object_or_404(ElementImage, id=self.kwargs["pk"])
-        self.element = self.image.element
+        image = get_object_or_404(ElementImage, id=self.kwargs["pk"])
+        self.element = image.element
         if self.element.user != self.request.user:
             raise PermissionDenied
-        messages.error(request, _('Image "%s" deleted') % self.image.id)
-        self.image.delete()
+        next = self.element.element_image.filter(position__gt=image.position)
+        messages.error(request, _('Image "%s" deleted') % image.id)
+        image.delete()
+        for img in next:
+            img.position -= 1
+            img.save()
 
     def get_redirect_url(self, *args, **kwargs):
         return reverse("geotree:image_loop", kwargs={"pk": self.element.id})
