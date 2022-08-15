@@ -11,6 +11,13 @@
         {% trans "Update" %}
         <span class="htmx-indicator spinner-border spinner-border-sm"></span>
       </button>
+      <button class="btn btn-secondary"
+        hx-get="{% url 'geotree:value_detail' pk=object.id %}"
+        hx-target="#value-{{ object.id }}"
+        hx-swap="outerHTML">
+        {% trans "Cancel" %}
+        <span class="htmx-indicator spinner-border spinner-border-sm"></span>
+      </button>
     </form>
   </div>
 </div>
